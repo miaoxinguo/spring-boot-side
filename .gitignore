@@ -1,0 +1,19 @@
+## gradle
+/.gradle
+/build
+/pttms-admin/build
+/pttms-server/build
+
+## idea
+/out
+/.idea
+*.iml
+
+## eclipse
+/bin/
+/.settings
+.classpath
+.project
+
+## mac
+/.DS_Store
