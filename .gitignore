@@ -1,8 +1,6 @@
 ## gradle
 /.gradle
 /build
-/pttms-admin/build
-/pttms-server/build
 
 ## idea
 /out
