@@ -1,6 +1,7 @@
-package demo.spring.boot.repository;
+package io.github.miaoxinguo.sbs.repository;
 
-import demo.spring.boot.entity.User;
+import io.github.miaoxinguo.sbs.entity.User;
+
 import java.util.List;
 
 public interface UserMapper {

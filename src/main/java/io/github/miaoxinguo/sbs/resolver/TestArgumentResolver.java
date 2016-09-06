@@ -1,4 +1,4 @@
-package demo.spring.boot.resolver;
+package io.github.miaoxinguo.sbs.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

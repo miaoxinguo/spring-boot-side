@@ -1,4 +1,4 @@
-package demo.spring.boot.entity;
+package io.github.miaoxinguo.sbs.entity;
 
 import java.util.Date;
 

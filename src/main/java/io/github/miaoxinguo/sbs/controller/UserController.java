@@ -1,7 +1,7 @@
-package demo.spring.boot.controller;
+package io.github.miaoxinguo.sbs.controller;
 
-import demo.spring.boot.entity.User;
-import demo.spring.boot.repository.UserMapper;
+import io.github.miaoxinguo.sbs.entity.User;
+import io.github.miaoxinguo.sbs.repository.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

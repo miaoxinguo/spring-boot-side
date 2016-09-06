@@ -1,6 +1,6 @@
-package demo.spring.boot.configuration;
+package io.github.miaoxinguo.sbs.configuration;
 
-import demo.spring.boot.resolver.TestArgumentResolver;
+import io.github.miaoxinguo.sbs.resolver.TestArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
