@@ -15,3 +15,5 @@
 
 ## mac
 /.DS_Store
+sbs-core/
+sbs-web/build.gradle
