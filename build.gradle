@@ -1,5 +1,13 @@
-subprojects {
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+    }
+}
 
+subprojects {
     group 'io.github.miaoxinguo.sbs'
     version '1.0-SNAPSHOT'
 
@@ -12,8 +20,6 @@ subprojects {
 
     dependencies {
         runtime 'mysql:mysql-connector-java:5.1.35'
-
-
         testCompile group: 'junit', name: 'junit', version: '4.11'
     }
 }
@@ -23,14 +29,7 @@ project(':sbs-core') {
 }
 
 project(':sbs-web') {
-    buildscript {
-        repositories {
-            jcenter()
-        }
-        dependencies {
-            classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
-        }
-    }
+
 
     apply plugin: 'spring-boot'
 
