@@ -1,6 +1,7 @@
 package jedis;
 
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
@@ -26,6 +27,15 @@ public class TestJedis {
 
         otherClient = new Jedis("121.42.58.92");
         otherClient.auth("isiagvK6TQqCt84");
+
+        jedis.select(13);
+        otherClient.select(13);
+    }
+
+    @After
+    public void destroy() {
+        jedis.flushDB();
+        otherClient.flushDB();
     }
 
     /**
@@ -87,8 +97,76 @@ public class TestJedis {
         tx.exec();  // 结果： JedisDataException: ERR EXEC without MULTI
     }
 
+    /**
+     * 测试 String 类型
+     */
     @Test
-    public void testGetString() {
-        System.out.println(jedis.get("*"));
+    public void testString() {
+        // 字符串
+        jedis.set("str_key", "value");
+        System.out.println(jedis.get("str_key"));  // value
+
+        jedis.append("str_key", "123456");
+        System.out.println(jedis.substr("str_key", 1, 16));  // alue123456
+
+
+        // 数字
+        jedis.set("int_key", "123");
+        System.out.println(jedis.incr("int_key"));   // 124
+        System.out.println(jedis.decrBy("int_key", 4));  // 120
+
+        jedis.set("float_key", "123.23");
+        System.out.println(jedis.incrByFloat("float_key", 2)); // 125.23
+    }
+
+    /**
+     * 测试 List 类型
+     */
+    @Test
+    public void testList() {
+        jedis.lpush("list", "a", "b");  // 头头部插 [b, a]
+        jedis.rpush("list", "y", "z");  // 从尾部插 [b, a, y, z]
+
+        System.out.println(jedis.lpop("list"));  // 输出： b
+        System.out.println(jedis.rpop("list"));  // 输出： z
+
+        jedis.lset("list", 0, "123");  // [123, y]
+
+        System.out.println(jedis.llen("list")); // 输出： 2
+
+        jedis.ltrim("list", 1, 1);
+        System.out.println(jedis.lpop("list"));  // 输出： y
+    }
+
+    /**
+     * 测试 Set 类型
+     */
+    @Test
+    public void testSet() {
+        jedis.sadd("set1", "a", "b", "a", "f");
+        jedis.sadd("set2", "a", "g");
+        jedis.sadd("set3", "b");
+        jedis.sadd("set4", "a");
+
+        // 所有元素
+        System.out.println(jedis.smembers("set1"));  // 输出： [a, b, f]
+        // 长度
+        System.out.println(jedis.scard("set1"));  // 输出： 3
+        // 是否包含
+        System.out.println(jedis.sismember("set1", "a"));  // 输出： true
+        System.out.println(jedis.sismember("set1", "z"));  // 输出： false
+
+        // sdiff 从第一个 set 中删除其它 set 中包含的元素
+        System.out.println(jedis.sdiff("set1", "set2", "set3"));  // 输出： [f]
+
+        // sdiffstore 和sdiff 一样，不同的是结果存到了一个新的 set
+        jedis.sdiffstore("set", "set1", "set2", "set3");
+        System.out.println(jedis.smembers("set"));   // 输出： [f]
+
+        // sunion 取并集。sunionstore 同sdiffstore
+        System.out.println(jedis.sunion("set1", "set2", "set3"));  // 输出：  [a, b, f, g]
+
+        // sinter 取交集。sinterstore 同上面两个
+        System.out.println(jedis.sinter("set1", "set2", "set4"));  // 输出：  [a]
     }
 }
