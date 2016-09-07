@@ -7,7 +7,9 @@ import org.junit.Test;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -168,5 +170,44 @@ public class TestJedis {
 
         // sinter 取交集。sinterstore 同上面两个
         System.out.println(jedis.sinter("set1", "set2", "set4"));  // 输出：  [a]
+    }
+
+
+    @Test
+    public void testHash() {
+        jedis.hset("hash", "key1", "123");
+
+        Map<String, String> data = new HashMap<>();
+        data.put("key2", "456");
+        data.put("key3", "789");
+        jedis.hmset("hash", data);
+
+        System.out.println(jedis.hget("hash", "key1"));  // 123
+
+        Map<String, String> map = jedis.hgetAll("hash");
+        System.out.println(map);  // {key1=123, key2=456, key3=789}
+
+
+    }
+
+    @Test
+    public void testZSet() {
+        jedis.zadd("z-set", 2.1, "21");
+        jedis.zadd("z-set", 2.6, "26");
+        jedis.zadd("z-set", 1.5, "15");
+        jedis.zadd("z-set", 1.8, "18");
+        jedis.zadd("z-set", 1.1, "11");
+
+        // 元素数
+        System.out.println(jedis.zcard("z-set"));  // 5
+        System.out.println(jedis.zcount("z-set", 1.5, 2.5));  // 3
+
+        // 按索引 、按score、按 member 取结果集
+        System.out.println(jedis.zrange("z-set", 0, 10));  // [11, 15, 18, 21, 26]
+        System.out.println(jedis.zrangeByScore("z-set", 1.5, 2.5));  // [15, 18, 21]
+        System.out.println(jedis.zrangeByLex("z-set", "[15", "(21" ));  // [15, 18]
+
+        // zrevrange 递减排列，zrevrangeByScore、zrevrangeByLex 一个意思
+        System.out.println(jedis.zrevrange("z-set", 0, 10));
     }
 }
