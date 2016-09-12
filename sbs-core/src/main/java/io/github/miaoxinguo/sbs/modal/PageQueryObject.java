@@ -3,7 +3,7 @@ package io.github.miaoxinguo.sbs.modal;
 /**
  * 分页查询抽象类
  */
-public abstract class PageQo extends BaseQo{
+public abstract class PageQueryObject extends BaseQueryObject {
 
     // 当前页数
     private int pageNum;

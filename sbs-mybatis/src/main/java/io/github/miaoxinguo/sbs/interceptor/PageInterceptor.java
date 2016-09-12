@@ -19,11 +19,12 @@ public abstract class PageInterceptor implements Interceptor {
     private static final String PAGE_SQL_KEY = "pageSqlKey";
     private static final String COUNT_SQL_KEY = "countSqlKey";
 
-    public static final String DEFAULT_PAGE_SQL = "findByQuery";
-    public static final String DEFAULT_COUNT_SQL = "findCountByQuery";
 
-    protected String pageSql = DEFAULT_PAGE_SQL;
-    protected String countSql = DEFAULT_COUNT_SQL;
+    private static final String DEFAULT_PAGE_SQL = "selectByQueryObject";
+    private static final String DEFAULT_COUNT_SQL = "selectCountByQueryObject";
+
+    private String pageSql = DEFAULT_PAGE_SQL;
+    private String countSql = DEFAULT_COUNT_SQL;
 
     @Override
     public Object plugin(Object target) {
@@ -46,7 +47,7 @@ public abstract class PageInterceptor implements Interceptor {
     }
 
     protected boolean isPageSql(String statement) {
-        return statement == null ? false : statement.endsWith(pageSql);
+        return statement != null && statement.endsWith(pageSql);
     }
 
     protected String buildCountStatement(String statement) {
