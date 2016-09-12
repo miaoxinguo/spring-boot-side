@@ -18,7 +18,7 @@
         </javaTypeResolver>
 
         <!-- 生成Model类存放位置 -->
-        <javaModelGenerator targetPackage="demo.spring.boot.entity" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="demo.spring.boot.io.github.miaoxinguo.sbs.entity" targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
@@ -29,7 +29,7 @@
         </sqlMapGenerator>
 
         <!-- 生成Dao类存放位置 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="demo.spring.boot.repository"  targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="demo.spring.boot.io.github.miaoxinguo.sbs.repository"  targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
