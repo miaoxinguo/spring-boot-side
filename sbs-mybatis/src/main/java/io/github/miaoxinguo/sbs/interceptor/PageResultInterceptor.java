@@ -3,7 +3,6 @@ package io.github.miaoxinguo.sbs.interceptor;
 import io.github.miaoxinguo.sbs.modal.PageQueryObject;
 import io.github.miaoxinguo.sbs.modal.PageResult;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
-import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
@@ -17,10 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 代理 StatementHandler 的 handleResultSets 方法， 组装 sql
+ * 拦截 StatementHandler 的 handleResultSets 方法， 组装 sql
  */
 @Intercepts({@Signature(type = ResultSetHandler.class, method = "handleResultSets", args = {Statement.class})})
 public class PageResultInterceptor extends PageInterceptor {
+
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         // 目标对象转换
@@ -29,16 +29,12 @@ public class PageResultInterceptor extends PageInterceptor {
         // 获取MappedStatement,Configuration对象
         MetaObject metaObject = MetaObject.forObject(resultSetHandler,
                 new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
-        MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("mappedStatement");
-        String statement = mappedStatement.getId();
-        if (!isPageSql(statement)) {
-            return invocation.proceed();
-        }
+
 
         // 获取分页参数
         PageQueryObject pageQuery = (PageQueryObject) metaObject.getValue("boundSql.parameterObject");
 
-        List<PageResult> result = new ArrayList<PageResult>(1);
+        List<PageResult> result = new ArrayList<>(1);
         PageResult page = new PageResult();
 //        page.setPagination(pageQuery.);
         page.setList((List) invocation.proceed());

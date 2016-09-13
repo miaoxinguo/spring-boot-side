@@ -17,49 +17,32 @@ abstract class PageInterceptor implements Interceptor {
 
     Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    // mybatis.conf 中 <plugin> 标签的属性 <property name="" value="" /> 中的name
-    private static final String PAGE_SQL_KEY = "pageSqlKey";
-    private static final String COUNT_SQL_KEY = "countSqlKey";
-
-    // mapper.xml 文件中 分页查询<select>标签的默认id
-    private static final String DEFAULT_PAGE_SQL = "selectByQueryObject";
-    private static final String DEFAULT_COUNT_SQL = "selectCountByQueryObject";
-
-    private String pageSql = DEFAULT_PAGE_SQL;
-    private String countSql = DEFAULT_COUNT_SQL;
-
+    /**
+     * 代理哪些类
+     *
+     * <p>这个方法可以替代 Mybatis 的插件拦截方式，即这里拦截所有的方法，
+     * 然后在 plugin 方法里对 target 为 StatementHandler 类型的参数执行 Plugin.warp.
+     *
+     * <p>仅做记录， plugin 的机制使用很方便
+     */
     @Override
     public Object plugin(Object target) {
         return Plugin.wrap(target, this);
     }
 
     /**
-     * 从 mybatis.conf 中取 <plugin> 标签下配置的属性，如没有用默认值
+     * 从 mybatis.conf 中取 <plugin> 标签下配置的属性
      */
     @Override
     public void setProperties(Properties properties) {
-        if (properties == null) {
-            return;
-        }
 
-        String sqlId = properties.getProperty(PAGE_SQL_KEY);
-        if (sqlId != null && !sqlId.trim().isEmpty()) {
-            LOGGER.info("use custom select id: {}", sqlId);
-            pageSql = sqlId;
-        }
-
-        sqlId = properties.getProperty(COUNT_SQL_KEY);
-        if (sqlId != null && !sqlId.trim().isEmpty()) {
-            LOGGER.info("use custom select count id: {}", sqlId);
-            countSql = sqlId;
-        }
     }
 
     protected boolean isPageSql(String statement) {
-        return statement != null && statement.endsWith(pageSql);
+        return statement != null ;
     }
 
-    protected String buildCountStatement(String statement) {
-        return statement.substring(0, statement.lastIndexOf(pageSql)) + countSql;
-    }
+//    protected String buildCountStatement(String statement) {
+//        return statement.substring(0, statement.lastIndexOf(pageSql)) + countSql;
+//    }
 }
