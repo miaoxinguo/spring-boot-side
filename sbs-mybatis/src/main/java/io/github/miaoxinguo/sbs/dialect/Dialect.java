@@ -3,7 +3,7 @@ package io.github.miaoxinguo.sbs.dialect;
 /**
  * 支持的数据库语言
  */
-interface Dialect {
+public interface Dialect {
 
     enum Type {
         MYSQL, ORACLE
