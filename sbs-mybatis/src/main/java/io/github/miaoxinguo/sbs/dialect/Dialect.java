@@ -6,7 +6,7 @@ package io.github.miaoxinguo.sbs.dialect;
 public interface Dialect {
 
     enum Type {
-        MYSQL, ORACLE
+        MYSQL
     }
 
     String getPageSql(String sql, int offset, int limit);
