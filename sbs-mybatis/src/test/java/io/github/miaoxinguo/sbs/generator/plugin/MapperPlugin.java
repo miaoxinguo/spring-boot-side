@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package io.github.miaoxinguo.sbs.generator;
+package io.github.miaoxinguo.sbs.generator.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;

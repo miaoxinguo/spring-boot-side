@@ -1,4 +1,4 @@
-package io.github.miaoxinguo.sbs.generator;
+package io.github.miaoxinguo.sbs.generator.comment;
 
 import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedColumn;

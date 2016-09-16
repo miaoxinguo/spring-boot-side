@@ -11,14 +11,9 @@
         <setting name="lazyLoadingEnabled" value="false"/>
     </settings>
 
-    <typeAliases>
-        <!--Model-->
-        <typeAlias type="com.jcloud.cap.data.model.Task" alias="Task"/>
-    </typeAliases>
-
     <plugins>
-        <plugin interceptor="com.jcloud.cap.data.mybatis.interceptor.PageStatementInterceptor" />
-        <plugin interceptor="com.jcloud.cap.data.mybatis.interceptor.PageResultInterceptor"/>
+        <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageStatementInterceptor" />
+        <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageResultInterceptor"/>
     </plugins>
 
 </configuration>

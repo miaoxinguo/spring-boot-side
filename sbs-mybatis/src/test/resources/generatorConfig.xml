@@ -6,12 +6,12 @@
 <generatorConfiguration>
 
     <context id="demo" targetRuntime="MyBatis3Simple">
-        <plugin type="io.github.miaoxinguo.sbs.generator.MapperPlugin"/>
+        <plugin type="io.github.miaoxinguo.sbs.generator.plugin.MapperPlugin"/>
 
         <!-- 设置注释：显示数据库的注释，定义生成时间格式 -->
-        <commentGenerator type="io.github.miaoxinguo.sbs.generator.CustomerCommentGenerator">
+        <commentGenerator type="io.github.miaoxinguo.sbs.generator.comment.CustomerCommentGenerator">
             <property name="addRemarkComments" value="true"/>
-            <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+            <property name="dateFormat" value="yyyy-MM-dd HH:mm"/>
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
@@ -51,8 +51,7 @@
 
         <table schema="sbs" tableName="account" enableDeleteByPrimaryKey="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <!--<columnOverride column="DATE_FIELD" property="startDate" />-->
-            <!--<ignoreColumn column="FRED" />-->
+            <columnOverride column="type" javaType="int" />
             <columnOverride column="user_id" javaType="User" property="user"/>
         </table>
 
