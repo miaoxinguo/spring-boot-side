@@ -1,0 +1,68 @@
+# PROFILES
+# dev | test | prod
+spring:
+    profiles:
+        active: dev
+---
+#                  dev 开发环境
+# --------------------------------------------------
+spring:
+    profiles: dev
+    mail:
+        host: smtp.mxhichina.com
+        username: service@honglingjin.xyz
+        password: Hlj666666
+    activemq:
+        broker-url: tcp://121.42.58.92:61616
+        user: user
+        password: ENC(mYRkg+4Q4hua1kvpCCI2hg==)
+    redis:
+        host: 121.42.58.92
+        port: 6379
+        password: isiagvK6TQqCt84
+        timeout: 120
+        database: 11
+
+# LOGGING
+logging:
+    config: classpath:logback-spring.xml
+
+# ----------------------------------------
+# WEB PROPERTIES
+# ----------------------------------------
+# EMBEDDED SERVER CONFIGURATION
+server:
+    port: 8080
+
+# ----------------------------------------
+# CUSTOMER PROPERTIES
+# ----------------------------------------
+# DB CONFIGURATION
+jdbc:
+    main:
+        url: jdbc:mysql://127.0.0.1:3306/pttms
+        username: root
+        password: root
+        maxActive: 10
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+
+    mainRead:   # pttms slave db
+        url: jdbc:mysql://127.0.0.1:3306/pttms
+        username: root
+        password: root
+        maxActive: 10
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+
+    addrDb: # base address db
+        url: jdbc:mysql://127.0.0.1:3306/locdb
+        username: root
+        password: root
+        maxActive: 10
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+
