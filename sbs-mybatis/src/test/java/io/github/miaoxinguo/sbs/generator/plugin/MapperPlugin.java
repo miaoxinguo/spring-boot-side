@@ -29,7 +29,8 @@ import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.Document;
-import org.mybatis.generator.api.dom.xml.Element;
+import org.mybatis.generator.api.dom.xml.TextElement;
+import org.mybatis.generator.api.dom.xml.XmlElement;
 
 import java.util.List;
 
@@ -58,14 +59,23 @@ public class MapperPlugin extends PluginAdapter {
 
 
     /**
-     * 生成 xml 文件的注释
+     * 生成映射器（xml）文件
      */
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
-        List<Element> elements = document.getRootElement().getElements();
-        elements.forEach(element -> {
-//            System.out.println(element);
-        });
+
+        XmlElement rootElement = document.getRootElement();
+
+        StringBuilder sb = new StringBuilder("<select ");
+        sb.append("id=\"selectByQueryObject\"")
+                .append(" parameterType=").append("\"java.lang.Integer\"")
+                .append(" resultMap=").append("\"BaseResultMap\"").append(" >");
+
+        rootElement.addElement(new TextElement(sb.toString()));
+
+        rootElement.addElement(new TextElement("</select>"));
+
+//        document.setRootElement(rootElement);
         return super.sqlMapDocumentGenerated(document, introspectedTable);
     }
 }
