@@ -78,7 +78,7 @@ public class CustomerCommentGenerator implements CommentGenerator {
 
         String s = getDateString();
         if (s != null) {
-            sb.append("于 ").append(s); //$NON-NLS-1$
+            sb.append("于: ").append(s); //$NON-NLS-1$
         }
         sb.append("，不要修改。");
         xmlElement.addElement(new TextElement(sb.toString()));

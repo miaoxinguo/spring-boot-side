@@ -3,7 +3,7 @@
 <mapper namespace="io.github.miaoxinguo.sbs.dao.AccountMapper">
   <resultMap id="BaseResultMap" type="io.github.miaoxinguo.sbs.entity.Account">
     <!--
-    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于 2016-09-16 19:10:01，不要修改。
+    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于: 2016-09-16 19:20:31，不要修改。
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -13,7 +13,7 @@
   </resultMap>
   <insert id="insert" parameterType="io.github.miaoxinguo.sbs.entity.Account">
     <!--
-    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于 2016-09-16 19:10:01，不要修改。
+    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于: 2016-09-16 19:20:31，不要修改。
     -->
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -25,7 +25,7 @@
   </insert>
   <update id="updateByPrimaryKey" parameterType="io.github.miaoxinguo.sbs.entity.Account">
     <!--
-    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于 2016-09-16 19:10:01，不要修改。
+    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于: 2016-09-16 19:20:31，不要修改。
     -->
     update account
     set name = #{name,jdbcType=VARCHAR},
@@ -36,7 +36,7 @@
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
-    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于 2016-09-16 19:10:01，不要修改。
+    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于: 2016-09-16 19:20:31，不要修改。
     -->
     select id, name, type, balance, user_id
     from account
@@ -44,7 +44,7 @@
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     <!--
-    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于 2016-09-16 19:10:01，不要修改。
+    @mbg.generated - 该元素由 Mybatis-Generator 自动创建于: 2016-09-16 19:20:31，不要修改。
     -->
     select id, name, type, balance, user_id
     from account
