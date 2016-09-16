@@ -73,7 +73,7 @@ public class CustomerCommentGenerator implements CommentGenerator {
         xmlElement.addElement(new TextElement("<!--"));
 
         StringBuilder sb = new StringBuilder();
-        sb.append(MergeConstants.NEW_ELEMENT_TAG);
+        sb.append("  ").append(MergeConstants.NEW_ELEMENT_TAG);
         sb.append(" - 该元素由 Mybatis-Generator 自动创建");
 
         String s = getDateString();
