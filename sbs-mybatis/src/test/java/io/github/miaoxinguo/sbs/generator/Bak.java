@@ -16,9 +16,28 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.MergeConstants;
 import org.mybatis.generator.internal.util.StringUtility;
 
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
-public class MapperCommentGenerator implements CommentGenerator {
+/**
+ * 自定义注释生成器
+ */
+public class Bak implements CommentGenerator {
+
+    /** The properties. */
+    private Properties properties;
+
+    /** The suppress date. */
+    private boolean suppressDate;
+
+    /** The suppress all comments. */
+    private boolean suppressAllComments;
+
+    /** The addition of table remark's comments.
+     * If suppressAllComments is true, this option is ignored*/
+    private boolean addRemarkComments;
+
+    private SimpleDateFormat dateFormat;
 
     //开始的分隔符，例如mysql为`，sqlserver为[
     private String beginningDelimiter = "";
@@ -26,7 +45,7 @@ public class MapperCommentGenerator implements CommentGenerator {
     //结束的分隔符，例如mysql为`，sqlserver为]
     private String endingDelimiter = "";
 
-    public MapperCommentGenerator() {
+    public Bak() {
         super();
     }
 

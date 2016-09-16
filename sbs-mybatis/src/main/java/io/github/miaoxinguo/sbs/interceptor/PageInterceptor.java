@@ -20,10 +20,8 @@ abstract class PageInterceptor implements Interceptor {
     /**
      * 代理哪些类
      *
-     * <p>这个方法可以替代 Mybatis 的插件拦截方式，即这里拦截所有的方法，
-     * 然后在 plugin 方法里对 target 为 StatementHandler 类型的参数执行 Plugin.warp.
-     *
-     * <p>仅做记录， plugin 的机制使用很方便
+     * <p>这个方法可以替代 Mybatis 的插件拦截方式，即实现一个全局拦截器拦截所有方法，
+     * 然后在 plugin 方法里做判断， 对 target 为 StatementHandler 类型的参数执行 Plugin.warp
      */
     @Override
     public Object plugin(Object target) {

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="demo" targetRuntime="MyBatis3Simple">
+        <plugin type="io.github.miaoxinguo.sbs.generator.MapperPlugin"/>
+
+        <!-- 设置注释：显示数据库的注释，定义生成时间格式 -->
+        <commentGenerator type="io.github.miaoxinguo.sbs.generator.CustomerCommentGenerator">
+            <property name="addRemarkComments" value="true"/>
+            <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/sbs"
+                        userId="sbs_root"
+                        password="123456">
+        </jdbcConnection>
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!-- When the property is true, the Java type resolver will always use java.math.BigDecimal
+                   if the database column is of type DECIMAL or NUMERIC. -->
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!-- 生成Model类存放位置 -->
+        <javaModelGenerator targetPackage="io.github.miaoxinguo.sbs.entity" targetProject="sbs-mybatis/src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成映射文件存放位置 -->
+        <sqlMapGenerator targetPackage="sqlMap" targetProject="sbs-mybatis/src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 生成Dao类存放位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="io.github.miaoxinguo.sbs.dao"
+                             targetProject="sbs-mybatis/src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--生成对应表及类名-->
+        <table schema="sbs" tableName="user" enableDeleteByPrimaryKey="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table schema="sbs" tableName="account" enableDeleteByPrimaryKey="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <!--<columnOverride column="DATE_FIELD" property="startDate" />-->
+            <!--<ignoreColumn column="FRED" />-->
+            <columnOverride column="user_id" javaType="User" property="user"/>
+        </table>
+
+    </context>
+</generatorConfiguration>
