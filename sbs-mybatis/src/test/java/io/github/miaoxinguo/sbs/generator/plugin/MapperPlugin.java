@@ -24,10 +24,15 @@
 
 package io.github.miaoxinguo.sbs.generator.plugin;
 
+import io.github.miaoxinguo.sbs.modal.PageQueryObject;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
+import org.mybatis.generator.api.dom.java.Method;
+import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
@@ -39,6 +44,7 @@ import java.util.List;
  */
 public class MapperPlugin extends PluginAdapter {
 
+    private final String SELECT_BY_QUERY_OBJECT = "selectByQueryObject";
     @Override
     public boolean validate(List<String> warnings) {
         System.out.println(">>>>>>>>>>  validate");
@@ -47,13 +53,23 @@ public class MapperPlugin extends PluginAdapter {
 
 
     /**
-     * 生成的Mapper接口
-     *
+     * 生成的 Dao 接口
      */
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        System.out.println(">>>>>>>>>>  clientGenerated");
+        System.out.println(">>>>>>>>>>  clientGenerated, gen: " + interfaze.getType().toString());
+        // import
+        interfaze.addImportedType(new FullyQualifiedJavaType(PageQueryObject.class.getName()));
 
+        Method method = new Method(SELECT_BY_QUERY_OBJECT);
+        method.addParameter(new Parameter(new FullyQualifiedJavaType(PageQueryObject.class.getSimpleName()),"queryObject"));
+
+        FullyQualifiedJavaType typeList = FullyQualifiedJavaType.getNewListInstance();
+        typeList.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));  // 泛型
+        method.setReturnType(typeList);
+
+        interfaze.addMethod(method);
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
         return true;
     }
 
@@ -63,19 +79,18 @@ public class MapperPlugin extends PluginAdapter {
      */
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
+        System.out.println(">>>>>>>>>>  sqlMapDocumentGenerated, gen " + introspectedTable.getBaseRecordType());
+        XmlElement element = new XmlElement("select");
+        element.addAttribute(new Attribute("id", SELECT_BY_QUERY_OBJECT));
+        element.addAttribute(new Attribute("resultMap", "BaseResultMap"));
 
-        XmlElement rootElement = document.getRootElement();
+        context.getCommentGenerator().addComment(element); // 增加自动创建的注释
 
-        StringBuilder sb = new StringBuilder("<select ");
-        sb.append("id=\"selectByQueryObject\"")
-                .append(" parameterType=").append("\"java.lang.Integer\"")
-                .append(" resultMap=").append("\"BaseResultMap\"").append(" >");
+        StringBuilder sb = new StringBuilder("select ");
+//        TODO 实现sql
+        element.addElement(new TextElement(sb.toString()));
 
-        rootElement.addElement(new TextElement(sb.toString()));
-
-        rootElement.addElement(new TextElement("</select>"));
-
-//        document.setRootElement(rootElement);
-        return super.sqlMapDocumentGenerated(document, introspectedTable);
+        document.getRootElement().addElement(element);
+        return true;
     }
 }
