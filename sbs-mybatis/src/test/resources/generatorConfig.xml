@@ -9,8 +9,6 @@
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
-        <plugin type="io.github.miaoxinguo.sbs.generator.plugin.MapperPlugin"/>
-
         <!-- 设置注释：显示数据库的注释，定义生成时间格式 -->
         <commentGenerator type="io.github.miaoxinguo.sbs.generator.comment.CustomerCommentGenerator">
             <property name="addRemarkComments" value="true"/>
