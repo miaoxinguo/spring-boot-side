@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
 
-    <context id="sbs" targetRuntime="MyBatis3Simple">
+    <context id="default" targetRuntime="MyBatis3Simple">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
@@ -40,6 +40,8 @@
         <!-- 生成Model类存放位置 -->
         <javaModelGenerator targetPackage="io.github.miaoxinguo.sbs.entity" targetProject="sbs-mybatis/src/main/java">
             <property name="enableSubPackages" value="true"/>
+
+            <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
@@ -52,9 +54,10 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="io.github.miaoxinguo.sbs.dao"
                              targetProject="sbs-mybatis/src/main/java">
             <property name="enableSubPackages" value="true"/>
-            <!-- 可以为所有生成的接口添加一个父接口，但是MBG只负责生成，不负责检查
-            <property name="rootInterface" value=""/>
-            -->
+
+            <!-- 可以为所有生成的接口添加一个父接口，但是MBG只负责生成，不负责检查 -->
+            <property name="rootInterface" value="io.github.miaoxinguo.sbs.modal.PageableRepository"/>
+
         </javaClientGenerator>
 
         <!--生成对应表及类名-->
@@ -69,4 +72,5 @@
         </table>
 
     </context>
+
 </generatorConfiguration>

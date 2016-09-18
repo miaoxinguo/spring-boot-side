@@ -24,7 +24,7 @@
 
 package io.github.miaoxinguo.sbs.generator.plugin;
 
-import io.github.miaoxinguo.sbs.modal.PageQueryObject;
+import io.github.miaoxinguo.sbs.qo.PageQueryObject;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -39,6 +39,7 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -49,58 +50,72 @@ import java.util.List;
 public class MapperPlugin extends PluginAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(MapperPlugin.class);
 
-    private final String SELECT_BY_QUERY_OBJECT = "selectByQueryObject";
+    private final String UPDATE_NOT_EMPTY_BY_PRIMARY_KEY = "updateNotEmptyByPrimaryKey";
 
     /**
      *  If this method returns false, then no further methods in the plugin will be called
      */
     @Override
     public boolean validate(List<String> warnings) {
-        return true;
+        return false;
     }
 
     /**
-     * 为每一个 XxxDao.java 生成 SELECT_BY_QUERY_OBJECT 方法
+     * 为每一个 XxxDao.java 生成自定义方法
      */
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        LOGGER.info("generate mapper interface for: {}, named: {}",
-                introspectedTable.getBaseRecordType(), interfaze.getType().toString());
+        LOGGER.info("generate method [{}] in {}", UPDATE_NOT_EMPTY_BY_PRIMARY_KEY, interfaze.getType().toString());
 
         // import
         interfaze.addImportedType(new FullyQualifiedJavaType(PageQueryObject.class.getName()));
 
-        Method method = new Method(SELECT_BY_QUERY_OBJECT);
-        method.addParameter(new Parameter(new FullyQualifiedJavaType(PageQueryObject.class.getSimpleName()),"queryObject"));
+        // method name & parameter
+        Method method = new Method(UPDATE_NOT_EMPTY_BY_PRIMARY_KEY);
+        method.addParameter(new Parameter(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()), "record"));
 
-        FullyQualifiedJavaType typeList = FullyQualifiedJavaType.getNewListInstance();
-        typeList.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));  // 泛型
-        method.setReturnType(typeList);
+        // return
+        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
 
         interfaze.addMethod(method);
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
         return true;
     }
 
-
     /**
-     * 为每一个 sqlMap.xml 生成 id 为 SELECT_BY_QUERY_OBJECT 的 select 标签
+     * 为每一个 sqlMap.xml 生成自定义方法对应的标签
      */
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
-        LOGGER.info("generate sqmMap.xml for {}", introspectedTable.getBaseRecordType());
+        LOGGER.info("generate element <update id={}> in xml", UPDATE_NOT_EMPTY_BY_PRIMARY_KEY);
 
-        XmlElement element = new XmlElement("select");
-        element.addAttribute(new Attribute("id", SELECT_BY_QUERY_OBJECT));
-        element.addAttribute(new Attribute("resultMap", "BaseResultMap"));
+        String baseRecordType = introspectedTable.getBaseRecordType();
+
+        XmlElement element = new XmlElement("update");
+        element.addAttribute(new Attribute("id", UPDATE_NOT_EMPTY_BY_PRIMARY_KEY));
+        element.addAttribute(new Attribute("parameterType", baseRecordType));
 
         context.getCommentGenerator().addComment(element); // 增加自动创建的注释
 
-        StringBuilder sb = new StringBuilder("select ");
-//        TODO 实现sql
+        String modalName = baseRecordType.substring(baseRecordType.lastIndexOf(".") + 1).toLowerCase();
+        StringBuilder sb = new StringBuilder("update ").append(modalName);
         element.addElement(new TextElement(sb.toString()));
 
-        document.getRootElement().addElement(element);
+        element.addElement(new TextElement("set"));
+
+
+        String template = "<if test=\"{0}!=null \">{2}=#'{'{0},jdbcType={3}'}'</if>";
+        introspectedTable.getBaseColumns().forEach(introspectedColumn -> {
+            Object[] params = {
+                    introspectedColumn.getJavaProperty(),
+                    introspectedColumn.getActualColumnName(),
+                    introspectedColumn.getJdbcTypeName()};
+            element.addElement(new TextElement(MessageFormat.format(template, params)));
+        });
+
+        document.getRootElement().addElement(3, element);  // index=3 表示新代码段插到原 update 后
         return true;
     }
+
 }
+

@@ -1,5 +1,7 @@
 package io.github.miaoxinguo.sbs.modal;
 
+import io.github.miaoxinguo.sbs.qo.PageQueryObject;
+
 import java.util.List;
 
 /**

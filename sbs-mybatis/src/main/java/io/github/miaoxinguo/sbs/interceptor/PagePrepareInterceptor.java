@@ -2,7 +2,7 @@ package io.github.miaoxinguo.sbs.interceptor;
 
 import io.github.miaoxinguo.sbs.dialect.Dialect;
 import io.github.miaoxinguo.sbs.dialect.MySql5Dialect;
-import io.github.miaoxinguo.sbs.modal.PageQueryObject;
+import io.github.miaoxinguo.sbs.qo.PageQueryObject;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.statement.StatementHandler;

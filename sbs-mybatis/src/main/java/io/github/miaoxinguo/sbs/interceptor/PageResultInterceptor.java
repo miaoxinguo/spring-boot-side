@@ -1,6 +1,6 @@
 package io.github.miaoxinguo.sbs.interceptor;
 
-import io.github.miaoxinguo.sbs.modal.PageQueryObject;
+import io.github.miaoxinguo.sbs.qo.PageQueryObject;
 import io.github.miaoxinguo.sbs.modal.PageResult;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.plugin.Intercepts;
