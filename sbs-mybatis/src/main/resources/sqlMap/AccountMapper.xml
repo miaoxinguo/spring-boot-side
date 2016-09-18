@@ -34,14 +34,6 @@
       user_id = #{user,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateNotEmptyByPrimaryKey" parameterType="io.github.miaoxinguo.sbs.entity.Account">
-    <!--
-      @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
-    -->
-    update account
-    set
-    <if test="name != null">name=#{name,jdbcType=VARCHAR}</if>
-  </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
