@@ -10,15 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 生成 repository.xml 文件
+ * 生成 entity、dao 类和映射器 xml 文件
  */
 public class MapperGenerator {
 
     public static void main(String[] args) throws Exception {
         List<String> warnings = new ArrayList<>();
 
-        File configFile = new File(MapperGenerator.class.getResource("/generatorConfig.xml").getPath());
         ConfigurationParser cp = new ConfigurationParser(warnings);
+        File configFile = new File(MapperGenerator.class.getResource("/generatorConfig.xml").getPath());
         Configuration config = cp.parseConfiguration(configFile);
 
         DefaultShellCallback callback = new DefaultShellCallback(true);

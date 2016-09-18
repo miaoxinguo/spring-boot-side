@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 /**
- * test jedis
+ * test redis client
  *
  * Created by miaoxinguo on 2016/9/5.
  */

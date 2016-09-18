@@ -5,13 +5,17 @@
 
 <generatorConfiguration>
 
-    <context id="demo" targetRuntime="MyBatis3Simple">
-        <plugin type="io.github.miaoxinguo.sbs.generator.MapperPlugin"/>
+    <context id="sbs" targetRuntime="MyBatis3Simple">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="io.github.miaoxinguo.sbs.generator.plugin.MapperPlugin"/>
 
         <!-- 设置注释：显示数据库的注释，定义生成时间格式 -->
-        <commentGenerator type="io.github.miaoxinguo.sbs.generator.CustomerCommentGenerator">
+        <commentGenerator type="io.github.miaoxinguo.sbs.generator.comment.CustomerCommentGenerator">
             <property name="addRemarkComments" value="true"/>
-            <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+            <property name="suppressDate" value="true"/>
+            <property name="dateFormat" value="yyyy-MM-dd HH:mm"/>
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
@@ -22,8 +26,14 @@
 
         <!-- 类型转换 -->
         <javaTypeResolver>
-            <!-- When the property is true, the Java type resolver will always use java.math.BigDecimal
-                   if the database column is of type DECIMAL or NUMERIC. -->
+            <!--
+               true：数据库的数据类型 DECIMAL 和 NUMERIC 映射为 java.math.BigDecimal
+               false：默认,
+                   scale>0;length>18：使用BigDecimal;
+                   scale=0;length[10,18]：使用Long；
+                   scale=0;length[5,9]：使用Integer；
+                   scale=0;length<5：使用Short；
+            -->
             <property name="forceBigDecimals" value="true"/>
         </javaTypeResolver>
 
@@ -42,17 +52,19 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="io.github.miaoxinguo.sbs.dao"
                              targetProject="sbs-mybatis/src/main/java">
             <property name="enableSubPackages" value="true"/>
+            <!-- 可以为所有生成的接口添加一个父接口，但是MBG只负责生成，不负责检查
+            <property name="rootInterface" value=""/>
+            -->
         </javaClientGenerator>
 
         <!--生成对应表及类名-->
-        <table schema="sbs" tableName="user" enableDeleteByPrimaryKey="false">
+        <table tableName="user" enableDeleteByPrimaryKey="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table schema="sbs" tableName="account" enableDeleteByPrimaryKey="false">
+        <table tableName="account" enableDeleteByPrimaryKey="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <!--<columnOverride column="DATE_FIELD" property="startDate" />-->
-            <!--<ignoreColumn column="FRED" />-->
+            <columnOverride column="type" javaType="int" />
             <columnOverride column="user_id" javaType="User" property="user"/>
         </table>
 
