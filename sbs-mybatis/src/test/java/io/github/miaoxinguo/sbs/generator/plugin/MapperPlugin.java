@@ -36,28 +36,37 @@ import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 /**
  * MBG 生成器插件
+ *
+ * http://www.mybatis.org/generator/reference/pluggingIn.html
  */
 public class MapperPlugin extends PluginAdapter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapperPlugin.class);
 
     private final String SELECT_BY_QUERY_OBJECT = "selectByQueryObject";
+
+    /**
+     *  If this method returns false, then no further methods in the plugin will be called
+     */
     @Override
     public boolean validate(List<String> warnings) {
-        System.out.println(">>>>>>>>>>  validate");
         return true;
     }
 
-
     /**
-     * 生成的 Dao 接口
+     * 为每一个 XxxDao.java 生成 SELECT_BY_QUERY_OBJECT 方法
      */
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        System.out.println(">>>>>>>>>>  clientGenerated, gen: " + interfaze.getType().toString());
+        LOGGER.info("generate mapper interface for: {}, named: {}",
+                introspectedTable.getBaseRecordType(), interfaze.getType().toString());
+
         // import
         interfaze.addImportedType(new FullyQualifiedJavaType(PageQueryObject.class.getName()));
 
@@ -75,11 +84,12 @@ public class MapperPlugin extends PluginAdapter {
 
 
     /**
-     * 生成映射器（xml）文件
+     * 为每一个 sqlMap.xml 生成 id 为 SELECT_BY_QUERY_OBJECT 的 select 标签
      */
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
-        System.out.println(">>>>>>>>>>  sqlMapDocumentGenerated, gen " + introspectedTable.getBaseRecordType());
+        LOGGER.info("generate sqmMap.xml for {}", introspectedTable.getBaseRecordType());
+
         XmlElement element = new XmlElement("select");
         element.addAttribute(new Attribute("id", SELECT_BY_QUERY_OBJECT));
         element.addAttribute(new Attribute("resultMap", "BaseResultMap"));
