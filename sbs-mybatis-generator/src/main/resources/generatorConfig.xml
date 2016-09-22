@@ -5,14 +5,14 @@
 
 <generatorConfiguration>
 
-    <context id="default" targetRuntime="io.github.miaoxinguo.sbs.generator.IntrospectedTableCustomerImpl">
+    <context id="default" targetRuntime="io.github.miaoxinguo.sbs.IntrospectedTableCustomerImpl">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
-        <plugin type="io.github.miaoxinguo.sbs.generator.plugin.MapperPlugin"/>
+        <plugin type="io.github.miaoxinguo.sbs.plugin.MapperPlugin"/>
 
         <!-- 设置注释：显示数据库的注释，定义生成时间格式 -->
-        <commentGenerator type="io.github.miaoxinguo.sbs.generator.comment.CustomerCommentGenerator">
+        <commentGenerator type="io.github.miaoxinguo.sbs.comment.CustomerCommentGenerator">
             <property name="suppressDate" value="true"/>
             <property name="dateFormat" value="yyyy-MM-dd HH:mm"/>
         </commentGenerator>
@@ -24,7 +24,7 @@
         </jdbcConnection>
 
         <!-- 类型转换 -->
-        <javaTypeResolver type="io.github.miaoxinguo.sbs.generator.resolver.JavaTypeResolverCustomerImpl">
+        <javaTypeResolver type="io.github.miaoxinguo.sbs.resolver.JavaTypeResolverCustomerImpl">
             <!--
                true：数据库的数据类型 DECIMAL 和 NUMERIC 映射为 java.math.BigDecimal
                false：默认,

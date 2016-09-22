@@ -1,4 +1,4 @@
-package io.github.miaoxinguo.sbs.generator.plugin;
+package io.github.miaoxinguo.sbs.plugin;
 
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;

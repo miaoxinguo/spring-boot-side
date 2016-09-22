@@ -1,4 +1,4 @@
-package io.github.miaoxinguo.sbs.generator;
+package io.github.miaoxinguo.sbs;
 
 import org.mybatis.generator.codegen.mybatis3.IntrospectedTableMyBatis3SimpleImpl;
 import org.mybatis.generator.internal.util.StringUtility;
