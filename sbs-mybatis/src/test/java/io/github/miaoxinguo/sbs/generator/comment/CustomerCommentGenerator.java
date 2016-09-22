@@ -277,8 +277,6 @@ public class CustomerCommentGenerator implements CommentGenerator {
             return;
         }
 
-        StringBuilder sb = new StringBuilder();
-
         field.addJavaDocLine("/**"); //$NON-NLS-1$
         field.addJavaDocLine(" * 该属性由 Mybatis-Generator 自动创建，可以配置生成规则，不要直接修改代码.");
 

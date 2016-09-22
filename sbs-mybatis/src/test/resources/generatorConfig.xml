@@ -5,9 +5,11 @@
 
 <generatorConfiguration>
 
-    <context id="default" targetRuntime="MyBatis3Simple">
+    <context id="default" targetRuntime="io.github.miaoxinguo.sbs.generator.IntrospectedTableCustomerImpl">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
+
+        <plugin type="io.github.miaoxinguo.sbs.generator.plugin.MapperPlugin"/>
 
         <!-- 设置注释：显示数据库的注释，定义生成时间格式 -->
         <commentGenerator type="io.github.miaoxinguo.sbs.generator.comment.CustomerCommentGenerator">
@@ -22,7 +24,7 @@
         </jdbcConnection>
 
         <!-- 类型转换 -->
-        <javaTypeResolver>
+        <javaTypeResolver type="io.github.miaoxinguo.sbs.generator.resolver.JavaTypeResolverCustomerImpl">
             <!--
                true：数据库的数据类型 DECIMAL 和 NUMERIC 映射为 java.math.BigDecimal
                false：默认,
@@ -64,7 +66,6 @@
 
         <table tableName="account" enableDeleteByPrimaryKey="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="type" javaType="int" />
             <columnOverride column="user_id" javaType="User" property="user"/>
         </table>
 

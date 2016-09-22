@@ -11,6 +11,7 @@
     <result column="balance" jdbcType="DECIMAL" property="balance" />
     <result column="user_id" jdbcType="INTEGER" property="user" />
   </resultMap>
+  
   <insert id="insert" parameterType="io.github.miaoxinguo.sbs.entity.Account">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
@@ -23,6 +24,7 @@
     values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{balance,jdbcType=DECIMAL}, 
       #{user,jdbcType=INTEGER})
   </insert>
+  
   <update id="updateByPrimaryKey" parameterType="io.github.miaoxinguo.sbs.entity.Account">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
@@ -34,6 +36,7 @@
       user_id = #{user,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
@@ -42,6 +45,7 @@
     from account
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
   <select id="selectAll" resultMap="BaseResultMap">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。

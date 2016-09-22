@@ -12,6 +12,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+  
   <insert id="insert" parameterType="io.github.miaoxinguo.sbs.entity.User">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
@@ -24,6 +25,7 @@
     values (#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{birthday,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
+  
   <update id="updateByPrimaryKey" parameterType="io.github.miaoxinguo.sbs.entity.User">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
@@ -36,6 +38,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
@@ -44,6 +47,7 @@
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
   <select id="selectAll" resultMap="BaseResultMap">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
