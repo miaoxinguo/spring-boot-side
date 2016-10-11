@@ -81,8 +81,8 @@ project(':sbs-service') {
     }
 }
 
-project(':sbs-web') {
-    archivesBaseName = 'sbs-web'
+project(':sbs-server') {
+    archivesBaseName = 'sbs-server'
 
     apply plugin: 'spring-boot'
 

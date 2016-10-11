@@ -54,17 +54,17 @@ public class CustomerCommentGenerator extends DefaultCommentGenerator {
 
     @Override
     public void addFieldComment(Field field, IntrospectedTable introspectedTable) {
-
+        //
     }
 
     @Override
     public void addGetterComment(Method method, IntrospectedTable table, IntrospectedColumn column) {
-
+        // get 方法不生成注释
     }
 
     @Override
     public void addSetterComment(Method method, IntrospectedTable table, IntrospectedColumn column) {
-
+        // set 方法不生成注释
     }
 
 }

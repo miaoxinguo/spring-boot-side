@@ -4,4 +4,5 @@ include 'sbs-mybatis'
 include 'sbs-service'
 include 'sbs-admin'
 include 'sbs-mybatis-generator'
+include 'sbs-common'
 
