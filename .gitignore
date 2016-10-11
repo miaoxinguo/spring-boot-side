@@ -15,3 +15,7 @@ out
 
 ## mac
 /.DS_Store
+
+## 临时文件
+sbs-mybatis-generator/src/main/java/tmp/
+
