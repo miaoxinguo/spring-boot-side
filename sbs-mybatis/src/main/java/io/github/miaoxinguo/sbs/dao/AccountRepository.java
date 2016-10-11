@@ -2,8 +2,11 @@ package io.github.miaoxinguo.sbs.dao;
 
 import io.github.miaoxinguo.sbs.entity.Account;
 import io.github.miaoxinguo.sbs.modal.PageableRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface AccountRepository extends PageableRepository {
     /**
      * 该方法由 Mybatis-Generator 自动创建，不要修改 

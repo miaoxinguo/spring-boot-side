@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="io.github.miaoxinguo.sbs.dao.UserRepository">
-  <resultMap id="BaseResultMap" type="io.github.miaoxinguo.sbs.entity.User">
+<mapper namespace="sqlMap.UserMapper">
+  <resultMap id="BaseResultMap" type="tmp.entity.User">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
     -->
@@ -13,7 +13,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   
-  <insert id="insert" parameterType="io.github.miaoxinguo.sbs.entity.User">
+  <insert id="insert" parameterType="tmp.entity.User">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
     -->
@@ -26,7 +26,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   
-  <update id="updateByPrimaryKey" parameterType="io.github.miaoxinguo.sbs.entity.User">
+  <update id="updateByPrimaryKey" parameterType="tmp.entity.User">
     <!--
       @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
     -->

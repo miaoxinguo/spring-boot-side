@@ -37,7 +37,7 @@
         </javaTypeResolver>
 
         <!-- 生成Model类存放位置 -->
-        <javaModelGenerator targetPackage="io.github.miaoxinguo.sbs.entity" targetProject="sbs-mybatis/src/main/java">
+        <javaModelGenerator targetPackage="tmp.entity" targetProject="sbs-mybatis-generator/src/main/java">
             <property name="enableSubPackages" value="true"/>
 
             <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
@@ -49,18 +49,16 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <!-- 生成Dao类存放位置 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="io.github.miaoxinguo.sbs.dao"
-                             targetProject="sbs-mybatis/src/main/java">
+        <!-- 不自动生成接口，写一个通用的泛型接口用于继承，解决生成覆盖的问题 -->
+        <!-- 生成 Repository 类存放位置
+        <javaClientGenerator type="XMLMAPPER" targetPackage="tmp.repository" targetProject="sbs-mybatis-generator/src/main/java">
             <property name="enableSubPackages" value="true"/>
-
-            <!-- 可以为所有生成的接口添加一个父接口，但是MBG只负责生成，不负责检查 -->
             <property name="rootInterface" value="io.github.miaoxinguo.sbs.modal.PageableRepository"/>
-
-        </javaClientGenerator>
+        </javaClientGenerator>-->
 
         <!--生成对应表及类名-->
         <table tableName="user" enableDeleteByPrimaryKey="false">
+            <!--<property name="rootInterface" value="io.github.miaoxinguo.sbs.modal.BaseRepository"/>-->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
