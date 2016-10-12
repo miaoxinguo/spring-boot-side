@@ -1,6 +1,6 @@
 package io.github.miaoxinguo.sbs.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class User {
     private Integer id;
@@ -13,13 +13,13 @@ public class User {
     /**
      * 年龄
      */
-    private Integer age;
+    private int age;
 
-    private Date birthday;
+    private LocalDateTime birthday;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     public Integer getId() {
         return id;
@@ -37,35 +37,35 @@ public class User {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public Date getBirthday() {
+    public LocalDateTime getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDateTime birthday) {
         this.birthday = birthday;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public LocalDateTime getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
 }

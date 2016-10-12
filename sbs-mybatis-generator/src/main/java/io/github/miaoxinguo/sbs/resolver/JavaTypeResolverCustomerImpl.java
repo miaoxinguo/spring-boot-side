@@ -16,6 +16,7 @@ public class JavaTypeResolverCustomerImpl extends JavaTypeResolverDefaultImpl {
      *
      * tinyint   -> int
      * smallint  -> int
+     * timestamp -> LocalDateTime
      */
     @Override
     protected FullyQualifiedJavaType overrideDefaultType(IntrospectedColumn column, FullyQualifiedJavaType defaultType) {
@@ -23,6 +24,8 @@ public class JavaTypeResolverCustomerImpl extends JavaTypeResolverDefaultImpl {
             case Types.TINYINT:
             case Types.SMALLINT:
                 return FullyQualifiedJavaType.getIntInstance();
+            case Types.TIMESTAMP:
+                return new FullyQualifiedJavaType("java.time.LocalDateTime");
         }
 
         return super.overrideDefaultType(column, defaultType);

@@ -58,8 +58,8 @@
 
         <!--生成对应表及类名-->
         <table tableName="user" enableDeleteByPrimaryKey="false">
-            <!--<property name="rootInterface" value="io.github.miaoxinguo.sbs.modal.BaseRepository"/>-->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="age" javaType="int"/>
         </table>
 
         <table tableName="account" enableDeleteByPrimaryKey="false">
