@@ -17,5 +17,5 @@ out
 /.DS_Store
 
 ## 临时文件
-sbs-mybatis-generator/src/main/java/tmp/
+sbs-mybatis-generator/src/main/java/io/github/miaoxinguo/sbs/entity/
 

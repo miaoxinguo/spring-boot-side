@@ -37,11 +37,10 @@ public class CustomerCommentGenerator extends DefaultCommentGenerator {
         xmlElement.addElement(new TextElement("-->"));
     }
 
+    // 属性的注释只包含数据库的列备注
     @Override
-    public void addFieldComment(Field field,
-                                IntrospectedTable introspectedTable,
-                                IntrospectedColumn introspectedColumn) {
-        String remarks = introspectedColumn.getRemarks();
+    public void addFieldComment(Field field, IntrospectedTable table, IntrospectedColumn column) {
+        String remarks = column.getRemarks();
         if (StringUtility.stringHasValue(remarks)) {
             field.addJavaDocLine("/**"); //$NON-NLS-1$
             String[] remarkLines = remarks.split(System.getProperty("line.separator"));  //$NON-NLS-1$

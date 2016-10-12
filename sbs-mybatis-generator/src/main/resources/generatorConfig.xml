@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
 
-    <context id="default" targetRuntime="io.github.miaoxinguo.sbs.IntrospectedTableCustomerImpl">
+    <context id="default" targetRuntime="MyBatis3Simple">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
@@ -37,7 +37,7 @@
         </javaTypeResolver>
 
         <!-- 生成Model类存放位置 -->
-        <javaModelGenerator targetPackage="tmp.entity" targetProject="sbs-mybatis-generator/src/main/java">
+        <javaModelGenerator targetPackage="io.github.miaoxinguo.sbs.entity" targetProject="sbs-mybatis-generator/src/main/java">
             <property name="enableSubPackages" value="true"/>
 
             <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
@@ -57,12 +57,12 @@
         </javaClientGenerator>-->
 
         <!--生成对应表及类名-->
-        <table tableName="user" enableDeleteByPrimaryKey="false">
+        <table tableName="user">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="age" javaType="int"/>
         </table>
 
-        <table tableName="account" enableDeleteByPrimaryKey="false">
+        <table tableName="account">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="user_id" javaType="User" property="user"/>
         </table>

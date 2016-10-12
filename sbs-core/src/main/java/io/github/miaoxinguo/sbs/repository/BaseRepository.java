@@ -33,8 +33,4 @@ public interface BaseRepository<T, PK extends Serializable> {
      */
     List<T> selectById(PK id);
 
-    /**
-     * 查询总记录数
-     */
-    int selectCount();
 }

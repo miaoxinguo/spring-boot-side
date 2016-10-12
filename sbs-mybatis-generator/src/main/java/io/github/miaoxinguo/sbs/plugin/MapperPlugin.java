@@ -3,9 +3,6 @@ package io.github.miaoxinguo.sbs.plugin;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.api.dom.java.Interface;
-import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.Element;
@@ -14,6 +11,7 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.ListUtilities;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,20 +20,58 @@ import java.util.List;
  */
 public class MapperPlugin extends PluginAdapter {
 
+    private static final List<String> elementOrder = new ArrayList<>();
+    static {
+        elementOrder.add("resultMap");
+        elementOrder.add("sql");
+        elementOrder.add("insert");
+        elementOrder.add("delete");
+        elementOrder.add("update");
+        elementOrder.add("select");
+    }
+
     @Override
     public boolean validate(List<String> warnings) {
         return true;
     }
 
-    /**
-     * client 生成后执行
-     */
+    // ------------  按接口中的方法名修改映射器文件中的id
     @Override
-    public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        // 增加注解
-        interfaze.addImportedType(new FullyQualifiedJavaType("org.springframework.stereotype.Repository"));
-        interfaze.addAnnotation("@Repository");
+    public boolean sqlMapSelectByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        replaceIdValue(element, "selectById");
         return true;
+    }
+
+    @Override
+    public boolean sqlMapDeleteByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        replaceIdValue(element, "deleteById");
+        return true;
+    }
+
+    @Override
+    public boolean sqlMapUpdateByPrimaryKeyWithoutBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        replaceIdValue(element, "update");
+        return true;
+    }
+
+    /*
+     * 替换 id 的值为接口中的方法名
+     */
+    private void replaceIdValue(XmlElement element, String newValue) {
+        Iterator<Attribute> it = element.getAttributes().iterator();
+        while(it.hasNext()) {
+            if(it.next().getName().equals("id")) {
+                it.remove();
+                break;
+            }
+        }
+        element.getAttributes().add(new Attribute("id", newValue));
+    }
+
+    // 不生成 findAll 方法
+    @Override
+    public boolean sqlMapSelectAllElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        return false;
     }
 
     /**
@@ -43,21 +79,77 @@ public class MapperPlugin extends PluginAdapter {
      */
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
-        // 每个元素后插入空行
+
+        addBaseColumnList(document.getRootElement(), introspectedTable);
+//        addUpdateSelectiveById(document.getRootElement(), introspectedTable);
+
         List<Element> elements = document.getRootElement().getElements();
+
+        // 排序
+        elements.sort((o1, o2) -> {
+            XmlElement e1 = (XmlElement) o1;
+            XmlElement e2 = (XmlElement) o2;
+            return elementOrder.indexOf(e1.getName()) - elementOrder.indexOf(e2.getName());
+        });
+
+        // 每个元素后插入空行
         for (int index = 1; index < elements.size(); index+=2) {
             elements.add(index, new TextElement(""));
         }
-        return super.sqlMapDocumentGenerated(document, introspectedTable);
+
+        // 增加分割线
+        Element lastElement = elements.get(elements.size() -1);
+        System.out.println(lastElement.getFormattedContent(0));
+        if(!lastElement.getFormattedContent(0).contains("分割线")) {
+            elements.add(new TextElement("<!-- 分割线 新增的代码写在此处以下 -->"));
+        }
+        return true;
     }
 
-    // 增加方法
-    private void addUpdateSelectivedByPrimiryKey(XmlElement rootElement, IntrospectedTable introspectedTable) {
+    /**
+     * 增加 sql 片段, base columns, 即所有列
+     *
+     * @see org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.BaseColumnListElementGenerator
+     */
+    private void addBaseColumnList(XmlElement parentElement, IntrospectedTable introspectedTable) {
+        XmlElement answer = new XmlElement("sql"); //$NON-NLS-1$
+
+        answer.addAttribute(new Attribute("id", introspectedTable.getBaseColumnListId()));
+
+        context.getCommentGenerator().addComment(answer);
+
+        StringBuilder sb = new StringBuilder();
+        Iterator<IntrospectedColumn> iter = introspectedTable.getNonBLOBColumns().iterator();
+        while (iter.hasNext()) {
+            sb.append(MyBatis3FormattingUtilities.getSelectListPhrase(iter.next()));
+
+            if (iter.hasNext()) {
+                sb.append(", "); //$NON-NLS-1$
+            }
+
+            if (sb.length() > 100) {
+                answer.addElement(new TextElement(sb.toString()));
+                sb.setLength(0);
+            }
+        }
+
+        if (sb.length() > 0) {
+            answer.addElement(new TextElement(sb.toString()));
+        }
+
+        parentElement.addElement(answer);
+    }
+
+    /**
+     * 增加 sql 片段, base columns, 即所有列
+     *
+     * @see org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeySelectiveElementGenerator
+     */
+    private void addUpdateSelectiveById(XmlElement rootElement, IntrospectedTable introspectedTable) {
+
         XmlElement answer = new XmlElement("update");
 
         answer.addAttribute(new Attribute("id", introspectedTable.getUpdateByExampleSelectiveStatementId())); //$NON-NLS-1$
-
-//        answer.addAttribute(new Attribute("parameterType", "map")); //$NON-NLS-1$ //$NON-NLS-2$
 
         context.getCommentGenerator().addComment(answer);
 
@@ -117,17 +209,5 @@ public class MapperPlugin extends PluginAdapter {
         rootElement.addElement(answer);
     }
 
-    /*
-     * 替换 id 的值为接口中的方法名
-     */
-    private void replaceIdValue(XmlElement element, String newValue) {
-        Iterator<Attribute> it = element.getAttributes().iterator();
-        while(it.hasNext()) {
-            if(it.next().getName().equals("id")) {
-                it.remove();
-                break;
-            }
-        }
-        element.getAttributes().add(new Attribute("id", newValue));
-    }
+
 }
