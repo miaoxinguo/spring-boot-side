@@ -70,8 +70,8 @@ project(':sbs-mybatis-generator') {
     }
 }
 
-project(':sbs-service') {
-    archivesBaseName = 'sbs-service'
+project(':sbs-biz') {
+    archivesBaseName = 'sbs-biz'
 
     dependencies {
         compile project(":sbs-core")
@@ -87,7 +87,7 @@ project(':sbs-server') {
     apply plugin: 'spring-boot'
 
     dependencies {
-        compile project(":sbs-service")
+        compile project(":sbs-biz")
 
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.boot:spring-boot-starter-aop")
@@ -105,7 +105,7 @@ project(':sbs-admin') {
     apply plugin: 'spring-boot'
 
     dependencies {
-        compile project(":sbs-service")
+        compile project(":sbs-biz")
 
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.boot:spring-boot-starter-aop")

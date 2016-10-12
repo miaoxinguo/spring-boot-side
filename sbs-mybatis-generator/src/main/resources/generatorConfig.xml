@@ -53,7 +53,7 @@
         <!-- 生成 Repository 类存放位置
         <javaClientGenerator type="XMLMAPPER" targetPackage="tmp.repository" targetProject="sbs-mybatis-generator/src/main/java">
             <property name="enableSubPackages" value="true"/>
-            <property name="rootInterface" value="io.github.miaoxinguo.sbs.modal.PageableRepository"/>
+            <property name="rootInterface" value="io.github.miaoxinguo.sbs.repository.PageableRepository"/>
         </javaClientGenerator>-->
 
         <!--生成对应表及类名-->

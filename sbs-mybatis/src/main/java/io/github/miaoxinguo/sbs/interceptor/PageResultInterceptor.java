@@ -1,6 +1,6 @@
 package io.github.miaoxinguo.sbs.interceptor;
 
-import io.github.miaoxinguo.sbs.qo.PageQueryObject;
+import io.github.miaoxinguo.sbs.qo.PageableQueryObject;
 import io.github.miaoxinguo.sbs.modal.PageResult;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.plugin.Intercepts;
@@ -32,7 +32,7 @@ public class PageResultInterceptor extends PageInterceptor {
 
 
         // 获取分页参数
-        PageQueryObject pageQuery = (PageQueryObject) metaObject.getValue("boundSql.parameterObject");
+        PageableQueryObject pageQuery = (PageableQueryObject) metaObject.getValue("boundSql.parameterObject");
 
         List<PageResult> result = new ArrayList<>(1);
         PageResult page = new PageResult();

@@ -5,4 +5,5 @@ package io.github.miaoxinguo.sbs.qo;
  */
 public class BaseQueryObject {
 
+
 }

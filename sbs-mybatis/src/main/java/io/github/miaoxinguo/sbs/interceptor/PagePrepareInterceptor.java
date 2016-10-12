@@ -2,7 +2,7 @@ package io.github.miaoxinguo.sbs.interceptor;
 
 import io.github.miaoxinguo.sbs.dialect.Dialect;
 import io.github.miaoxinguo.sbs.dialect.MySql5Dialect;
-import io.github.miaoxinguo.sbs.qo.PageQueryObject;
+import io.github.miaoxinguo.sbs.qo.PageableQueryObject;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -41,10 +41,10 @@ public class PagePrepareInterceptor extends PageInterceptor {
             return invocation.proceed();
         }
 
-//        PageQueryObject pageQueryObject = null;
+//        PageableQueryObject pageQueryObject = null;
 //        for(Map.Entry entry : paramMap.entrySet()){
-//            if(entry.getValue() instanceof PageQueryObject){
-//                pageQueryObject = (PageQueryObject) entry.getValue();
+//            if(entry.getValue() instanceof PageableQueryObject){
+//                pageQueryObject = (PageableQueryObject) entry.getValue();
 //                break;
 //            }
 //        }
@@ -60,7 +60,7 @@ public class PagePrepareInterceptor extends PageInterceptor {
 
         Executor executor = (Executor) metaObject.getValue("delegate.executor");
 
-        PageQueryObject pageQuery = (PageQueryObject) boundSql.getParameterObject();
+        PageableQueryObject pageQuery = (PageableQueryObject) boundSql.getParameterObject();
 //        String countStatement = buildCountStatement(statement);
 //        List<Integer> counts = executor.query(configuration.getMappedStatement(countStatement), pageQuery, RowBounds.DEFAULT, null);
 

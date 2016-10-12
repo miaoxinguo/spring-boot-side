@@ -20,7 +20,6 @@ public class MapperGenerator {
 
     public static void main(String[] args) throws Exception {
         List<String> warnings = new ArrayList<>();
-
         ConfigurationParser cp = new ConfigurationParser(warnings);
         File configFile = new File(MapperGenerator.class.getResource("/generatorConfig.xml").getPath());
         Configuration config = cp.parseConfiguration(configFile);

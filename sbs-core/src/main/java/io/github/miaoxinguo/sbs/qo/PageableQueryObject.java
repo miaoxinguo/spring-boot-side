@@ -7,7 +7,7 @@ import javax.validation.constraints.Min;
 /**
  * 分页查询抽象类
  */
-public abstract class PageQueryObject extends BaseQueryObject {
+public abstract class PageableQueryObject extends BaseQueryObject {
 
     // 当前页数
     @Digits(message = "pageNum 必须是正整数", integer = Integer.MAX_VALUE, fraction = 0)
