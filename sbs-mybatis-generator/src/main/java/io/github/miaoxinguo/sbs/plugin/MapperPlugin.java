@@ -81,7 +81,7 @@ public class MapperPlugin extends PluginAdapter {
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
 
         addBaseColumnList(document.getRootElement(), introspectedTable);
-//        addUpdateSelectiveById(document.getRootElement(), introspectedTable);
+        addUpdateSelectiveById(document.getRootElement(), introspectedTable);
 
         List<Element> elements = document.getRootElement().getElements();
 
@@ -95,13 +95,6 @@ public class MapperPlugin extends PluginAdapter {
         // 每个元素后插入空行
         for (int index = 1; index < elements.size(); index+=2) {
             elements.add(index, new TextElement(""));
-        }
-
-        // 增加分割线
-        Element lastElement = elements.get(elements.size() -1);
-        System.out.println(lastElement.getFormattedContent(0));
-        if(!lastElement.getFormattedContent(0).contains("分割线")) {
-            elements.add(new TextElement("<!-- 分割线 新增的代码写在此处以下 -->"));
         }
         return true;
     }
@@ -149,7 +142,7 @@ public class MapperPlugin extends PluginAdapter {
 
         XmlElement answer = new XmlElement("update");
 
-        answer.addAttribute(new Attribute("id", introspectedTable.getUpdateByExampleSelectiveStatementId())); //$NON-NLS-1$
+        answer.addAttribute(new Attribute("id", "updateSelectiveById")); //$NON-NLS-1$
 
         context.getCommentGenerator().addComment(answer);
 
@@ -171,19 +164,16 @@ public class MapperPlugin extends PluginAdapter {
             dynamicElement.addElement(isNotNullElement);
 
             sb.setLength(0);
-            sb.append(MyBatis3FormattingUtilities
-                    .getAliasedEscapedColumnName(introspectedColumn));
+            sb.append(MyBatis3FormattingUtilities.getAliasedEscapedColumnName(introspectedColumn));
             sb.append(" = "); //$NON-NLS-1$
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(
-                    introspectedColumn, "record.")); //$NON-NLS-1$
+            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "record.")); //$NON-NLS-1$
             sb.append(',');
 
             isNotNullElement.addElement(new TextElement(sb.toString()));
         }
 
         boolean and = false;
-        for (IntrospectedColumn introspectedColumn : introspectedTable
-                .getPrimaryKeyColumns()) {
+        for (IntrospectedColumn introspectedColumn : introspectedTable.getPrimaryKeyColumns()) {
             sb.setLength(0);
             if (and) {
                 sb.append("  and "); //$NON-NLS-1$
@@ -192,18 +182,11 @@ public class MapperPlugin extends PluginAdapter {
                 and = true;
             }
 
-            sb.append(MyBatis3FormattingUtilities
-                    .getEscapedColumnName(introspectedColumn));
+            sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
             sb.append(" = "); //$NON-NLS-1$
-            sb.append(MyBatis3FormattingUtilities
-                    .getParameterClause(introspectedColumn));
-            answer.addElement(new TextElement(sb.toString()));
-        }
+            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
 
-        if (context.getPlugins()
-                .sqlMapUpdateByPrimaryKeySelectiveElementGenerated(answer,
-                        introspectedTable)) {
-            rootElement.addElement(answer);
+            answer.addElement(new TextElement(sb.toString()));
         }
 
         rootElement.addElement(answer);

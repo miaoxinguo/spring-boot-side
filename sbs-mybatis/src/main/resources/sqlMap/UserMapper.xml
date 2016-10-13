@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sqlMap.UserMapper">
+  <resultMap id="BaseResultMap" type="io.github.miaoxinguo.sbs.entity.User">
+    <!--
+      @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    <!--
+      @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
+    -->
+    id, name, age, birthday, create_time, update_time
+  </sql>
+  
+  <insert id="insert" parameterType="io.github.miaoxinguo.sbs.entity.User">
+    <!--
+      @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
+    -->
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (name, age, birthday, 
+      create_time, update_time)
+    values (#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{birthday,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    <!--
+      @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
+    -->
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <update id="update" parameterType="io.github.miaoxinguo.sbs.entity.User">
+    <!--
+      @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
+    -->
+    update user
+    set name = #{name,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateSelectiveById">
+    <!--
+      @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
+    -->
+    update user
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.age != null">
+        age = #{record.age,jdbcType=INTEGER},
+      </if>
+      <if test="record.birthday != null">
+        birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--
+      @mbg.generated - 该元素由 Mybatis-Generator 自动创建，不要修改。
+    -->
+    select id, name, age, birthday, create_time, update_time
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!-- 分割线 新增的代码写在此处以下 -->
+
+</mapper>

@@ -59,7 +59,6 @@
         <!--生成对应表及类名-->
         <table tableName="user">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="age" javaType="int"/>
         </table>
 
         <table tableName="account">

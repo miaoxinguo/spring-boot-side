@@ -13,7 +13,7 @@ public class User {
     /**
      * 年龄
      */
-    private int age;
+    private Integer age;
 
     private LocalDateTime birthday;
 
@@ -37,11 +37,11 @@ public class User {
         this.name = name == null ? null : name.trim();
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

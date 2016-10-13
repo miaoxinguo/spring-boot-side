@@ -14,8 +14,8 @@ public class JavaTypeResolverCustomerImpl extends JavaTypeResolverDefaultImpl {
     /**
      * 覆盖默认的映射类型
      *
-     * tinyint   -> int
-     * smallint  -> int
+     * tinyint   -> Integer
+     * smallint  -> Integer
      * timestamp -> LocalDateTime
      */
     @Override
@@ -23,7 +23,7 @@ public class JavaTypeResolverCustomerImpl extends JavaTypeResolverDefaultImpl {
         switch (column.getJdbcType()) {
             case Types.TINYINT:
             case Types.SMALLINT:
-                return FullyQualifiedJavaType.getIntInstance();
+                return new FullyQualifiedJavaType("java.lang.Integer");
             case Types.TIMESTAMP:
                 return new FullyQualifiedJavaType("java.time.LocalDateTime");
         }
