@@ -63,7 +63,7 @@
 
         <table tableName="account">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="user_id" javaType="User" property="user"/>
+            <columnOverride column="user_id" javaType="io.github.miaoxinguo.sbs.entity.User" property="user"/>
         </table>
 
     </context>

@@ -5,6 +5,6 @@ import io.github.miaoxinguo.sbs.qo.UserQueryObject;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends PageableRepository<User, UserQueryObject> {
+public interface UserRepository extends PageableRepository<User, Integer, UserQueryObject> {
 
 }

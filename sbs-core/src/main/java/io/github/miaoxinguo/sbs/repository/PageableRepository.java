@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 分页查询接口
  */
-public interface PageableRepository<T, PK extends Serializable, Q extends BaseQueryObject> extends BaseRepository<T, PK> {
+public interface PageableRepository<T, PK extends Serializable, Q extends BaseQueryObject> extends GenericRepository<T, PK> {
 
     /**
      * 根据 QueryObject 分页查询结果

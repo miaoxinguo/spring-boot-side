@@ -1,12 +1,11 @@
 package io.github.miaoxinguo.sbs.repository;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 分页查询接口
  */
-public interface BaseRepository<T, PK extends Serializable> {
+public interface GenericRepository<T, PK extends Serializable> {
 
     /**
      * 插入一条记录
@@ -31,6 +30,6 @@ public interface BaseRepository<T, PK extends Serializable> {
     /**
      * 根据 id 查询
      */
-    List<T> selectById(PK id);
+    T selectById(PK id);
 
 }

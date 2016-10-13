@@ -15,5 +15,4 @@
         <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageStatementInterceptor" />
         <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageResultInterceptor"/>
     </plugins>
-
 </configuration>

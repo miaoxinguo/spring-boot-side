@@ -1,6 +1,5 @@
 package io.github.miaoxinguo.sbs.plugin;
 
-import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -8,8 +7,8 @@ import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.Element;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
-import org.mybatis.generator.codegen.mybatis3.ListUtilities;
-import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
+import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.BaseColumnListElementGenerator;
+import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeySelectiveElementGenerator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,6 +19,7 @@ import java.util.List;
  */
 public class MapperPlugin extends PluginAdapter {
 
+    // sqlMap.xml 自动生成的标签顺序
     private static final List<String> elementOrder = new ArrayList<>();
     static {
         elementOrder.add("resultMap");
@@ -37,12 +37,6 @@ public class MapperPlugin extends PluginAdapter {
 
     // ------------  按接口中的方法名修改映射器文件中的id
     @Override
-    public boolean sqlMapSelectByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        replaceIdValue(element, "selectById");
-        return true;
-    }
-
-    @Override
     public boolean sqlMapDeleteByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
         replaceIdValue(element, "deleteById");
         return true;
@@ -51,6 +45,18 @@ public class MapperPlugin extends PluginAdapter {
     @Override
     public boolean sqlMapUpdateByPrimaryKeyWithoutBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
         replaceIdValue(element, "update");
+        return true;
+    }
+
+    @Override
+    public boolean sqlMapUpdateByPrimaryKeySelectiveElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        replaceIdValue(element, "updateSelectiveById");
+        return super.sqlMapUpdateByPrimaryKeySelectiveElementGenerated(element, introspectedTable);
+    }
+
+    @Override
+    public boolean sqlMapSelectByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        replaceIdValue(element, "selectById");
         return true;
     }
 
@@ -105,32 +111,10 @@ public class MapperPlugin extends PluginAdapter {
      * @see org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.BaseColumnListElementGenerator
      */
     private void addBaseColumnList(XmlElement parentElement, IntrospectedTable introspectedTable) {
-        XmlElement answer = new XmlElement("sql"); //$NON-NLS-1$
-
-        answer.addAttribute(new Attribute("id", introspectedTable.getBaseColumnListId()));
-
-        context.getCommentGenerator().addComment(answer);
-
-        StringBuilder sb = new StringBuilder();
-        Iterator<IntrospectedColumn> iter = introspectedTable.getNonBLOBColumns().iterator();
-        while (iter.hasNext()) {
-            sb.append(MyBatis3FormattingUtilities.getSelectListPhrase(iter.next()));
-
-            if (iter.hasNext()) {
-                sb.append(", "); //$NON-NLS-1$
-            }
-
-            if (sb.length() > 100) {
-                answer.addElement(new TextElement(sb.toString()));
-                sb.setLength(0);
-            }
-        }
-
-        if (sb.length() > 0) {
-            answer.addElement(new TextElement(sb.toString()));
-        }
-
-        parentElement.addElement(answer);
+        BaseColumnListElementGenerator generator = new BaseColumnListElementGenerator();
+        generator.setIntrospectedTable(introspectedTable);
+        generator.setContext(context);
+        generator.addElements(parentElement);
     }
 
     /**
@@ -138,58 +122,11 @@ public class MapperPlugin extends PluginAdapter {
      *
      * @see org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeySelectiveElementGenerator
      */
-    private void addUpdateSelectiveById(XmlElement rootElement, IntrospectedTable introspectedTable) {
-
-        XmlElement answer = new XmlElement("update");
-
-        answer.addAttribute(new Attribute("id", "updateSelectiveById")); //$NON-NLS-1$
-
-        context.getCommentGenerator().addComment(answer);
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("update "); //$NON-NLS-1$
-        sb.append(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime());
-        answer.addElement(new TextElement(sb.toString()));
-
-        XmlElement dynamicElement = new XmlElement("set"); //$NON-NLS-1$
-        answer.addElement(dynamicElement);
-
-        for (IntrospectedColumn introspectedColumn : ListUtilities.removeGeneratedAlwaysColumns(introspectedTable
-                .getAllColumns())) {
-            XmlElement isNotNullElement = new XmlElement("if"); //$NON-NLS-1$
-            sb.setLength(0);
-            sb.append(introspectedColumn.getJavaProperty("record.")); //$NON-NLS-1$
-            sb.append(" != null"); //$NON-NLS-1$
-            isNotNullElement.addAttribute(new Attribute("test", sb.toString())); //$NON-NLS-1$
-            dynamicElement.addElement(isNotNullElement);
-
-            sb.setLength(0);
-            sb.append(MyBatis3FormattingUtilities.getAliasedEscapedColumnName(introspectedColumn));
-            sb.append(" = "); //$NON-NLS-1$
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "record.")); //$NON-NLS-1$
-            sb.append(',');
-
-            isNotNullElement.addElement(new TextElement(sb.toString()));
-        }
-
-        boolean and = false;
-        for (IntrospectedColumn introspectedColumn : introspectedTable.getPrimaryKeyColumns()) {
-            sb.setLength(0);
-            if (and) {
-                sb.append("  and "); //$NON-NLS-1$
-            } else {
-                sb.append("where "); //$NON-NLS-1$
-                and = true;
-            }
-
-            sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
-            sb.append(" = "); //$NON-NLS-1$
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
-
-            answer.addElement(new TextElement(sb.toString()));
-        }
-
-        rootElement.addElement(answer);
+    private void addUpdateSelectiveById(XmlElement parentElement, IntrospectedTable introspectedTable) {
+        UpdateByPrimaryKeySelectiveElementGenerator generator = new UpdateByPrimaryKeySelectiveElementGenerator();
+        generator.setIntrospectedTable(introspectedTable);
+        generator.setContext(context);
+        generator.addElements(parentElement);
     }
 
 

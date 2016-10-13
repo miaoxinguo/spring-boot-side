@@ -92,6 +92,7 @@ project(':sbs-server') {
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-data-redis")
+        compile group: 'com.alibaba', name: 'druid', version: '1.0.26'
 
         runtime 'mysql:mysql-connector-java:5.1.35'
 
@@ -109,6 +110,7 @@ project(':sbs-admin') {
 
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.boot:spring-boot-starter-aop")
+        compile group: 'com.alibaba', name: 'druid', version: '1.0.26'
 
         compile 'org.hibernate:hibernate-validator:5.1.3.Final'
 

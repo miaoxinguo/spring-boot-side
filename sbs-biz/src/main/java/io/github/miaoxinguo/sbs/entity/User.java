@@ -2,7 +2,7 @@ package io.github.miaoxinguo.sbs.entity;
 
 import java.time.LocalDateTime;
 
-public class User {
+public class User extends BaseEntity {
     private Integer id;
 
     /**
@@ -67,5 +67,17 @@ public class User {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", birthday=" + birthday +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

@@ -62,7 +62,7 @@ public class PagePrepareInterceptor extends PageInterceptor {
 
         PageableQueryObject pageQuery = (PageableQueryObject) boundSql.getParameterObject();
 //        String countStatement = buildCountStatement(statement);
-//        List<Integer> counts = executor.query(configuration.getMappedStatement(countStatement), pageQuery, RowBounds.DEFAULT, null);
+//        List<Integer> counts = executor.query(DbConfiguration.getMappedStatement(countStatement), pageQuery, RowBounds.DEFAULT, null);
 
 
 
@@ -73,7 +73,7 @@ public class PagePrepareInterceptor extends PageInterceptor {
 
         // 获取 Configuration对象
         // delegate 是定义在 RoutingStatementHandler 中的属性，实际的对象是真正执行方法的 StatementHandler
-        Configuration configuration = (Configuration) metaObject.getValue("delegate.configuration");
+        Configuration configuration = (Configuration) metaObject.getValue("delegate.DbConfiguration");
         String config = configuration.getVariables().getProperty("dialect");
         Dialect.Type dialectType = config == null ? Dialect.Type.MYSQL : Dialect.Type.valueOf(config.toUpperCase());
 

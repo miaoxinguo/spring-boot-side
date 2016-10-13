@@ -2,7 +2,7 @@ package io.github.miaoxinguo.sbs.entity;
 
 import java.math.BigDecimal;
 
-public class Account {
+public class Account extends BaseEntity{
     private Integer id;
 
     private String name;

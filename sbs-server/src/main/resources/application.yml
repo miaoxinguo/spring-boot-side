@@ -27,42 +27,15 @@ spring:
 logging:
     config: classpath:logback-spring.xml
 
-# ----------------------------------------
-# WEB PROPERTIES
-# ----------------------------------------
-# EMBEDDED SERVER CONFIGURATION
 server:
-    port: 8080
+    port: 8088
 
-# ----------------------------------------
-# CUSTOMER PROPERTIES
-# ----------------------------------------
-# DB CONFIGURATION
-jdbc:
-    main:
-        url: jdbc:mysql://127.0.0.1:3306/pttms
-        username: root
-        password: root
-        maxActive: 10
-        initialSize: 1
-        maxWait: 60000
-        minIdle: 1
+datasource:
+    master:
+        url: jdbc:mysql://127.0.0.1:3306/sbs?useUnicode=true&characterEncoding=utf-8
+        username: sbs_root
+        password: 123456
 
-    mainRead:   # pttms slave db
-        url: jdbc:mysql://127.0.0.1:3306/pttms
-        username: root
-        password: root
-        maxActive: 10
-        initialSize: 1
-        maxWait: 60000
-        minIdle: 1
 
-    addrDb: # base address db
-        url: jdbc:mysql://127.0.0.1:3306/locdb
-        username: root
-        password: root
-        maxActive: 10
-        initialSize: 1
-        maxWait: 60000
-        minIdle: 1
-
+mybatis:
+    mapper-locations: classpath*:/sqlMap/*Mapper.xml
