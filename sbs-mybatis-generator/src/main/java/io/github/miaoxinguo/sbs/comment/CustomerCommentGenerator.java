@@ -25,15 +25,8 @@ public class CustomerCommentGenerator extends DefaultCommentGenerator {
 
         StringBuilder sb = new StringBuilder();
         sb.append("  ").append(MergeConstants.NEW_ELEMENT_TAG);
-        sb.append(" - 该元素由 Mybatis-Generator 自动创建");
-
-        String s = getDateString();
-        if (s != null) {
-            sb.append("于: ").append(s); //$NON-NLS-1$
-        }
-        sb.append("，不要修改。");
+//        sb.append(" - 该元素由 Mybatis-Generator 自动创建，不要修改");
         xmlElement.addElement(new TextElement(sb.toString()));
-
         xmlElement.addElement(new TextElement("-->"));
     }
 

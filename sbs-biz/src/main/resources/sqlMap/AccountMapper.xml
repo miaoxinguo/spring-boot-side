@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.miaoxinguo.sbs.repository.AccountRepository">
+  <resultMap id="BaseResultMap" type="io.github.miaoxinguo.sbs.entity.Account">
+    <!--
+      @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="balance" jdbcType="DECIMAL" property="balance" />
+    <result column="user_id" jdbcType="INTEGER" property="user" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    <!--
+      @mbg.generated
+    -->
+    id, name, type, balance, user_id
+  </sql>
+  
+  <insert id="insert" parameterType="io.github.miaoxinguo.sbs.entity.Account">
+    <!--
+      @mbg.generated
+    -->
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into account (name, type, balance, 
+      user_id)
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{balance,jdbcType=DECIMAL}, 
+      #{user,jdbcType=INTEGER})
+  </insert>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    <!--
+      @mbg.generated
+    -->
+    delete from account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <update id="update" parameterType="io.github.miaoxinguo.sbs.entity.Account">
+    <!--
+      @mbg.generated
+    -->
+    update account
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      balance = #{balance,jdbcType=DECIMAL},
+      user_id = #{user,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateSelectiveById" parameterType="io.github.miaoxinguo.sbs.entity.Account">
+    <!--
+      @mbg.generated
+    -->
+    update account
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="user != null">
+        user_id = #{user,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectById" parameterType="java.lang.Integer" resultType="io.github.miaoxinguo.sbs.entity.Account">
+    <!--
+      @mbg.generated
+    -->
+    select id, name, type, balance, user_id
+    from account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>

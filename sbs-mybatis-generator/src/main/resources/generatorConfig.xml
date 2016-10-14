@@ -5,23 +5,20 @@
 
 <generatorConfiguration>
 
-    <context id="default" targetRuntime="MyBatis3">
+    <context id="default" targetRuntime="MyBatis3Simple">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
+        <property name="namespace" value="io.github.miaoxinguo.sbs.repository"/>
 
         <plugin type="io.github.miaoxinguo.sbs.plugin.MapperPlugin"/>
 
         <!-- 设置注释：显示数据库的注释，定义生成时间格式 -->
-        <commentGenerator type="io.github.miaoxinguo.sbs.comment.CustomerCommentGenerator">
-            <property name="suppressDate" value="true"/>
-            <property name="dateFormat" value="yyyy-MM-dd HH:mm"/>
-        </commentGenerator>
+        <commentGenerator type="io.github.miaoxinguo.sbs.comment.CustomerCommentGenerator"/>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/sbs"
                         userId="sbs_root"
-                        password="123456">
-        </jdbcConnection>
+                        password="123456"/>
 
         <!-- 类型转换 -->
         <javaTypeResolver type="io.github.miaoxinguo.sbs.resolver.JavaTypeResolverCustomerImpl">
@@ -45,15 +42,15 @@
         </javaModelGenerator>
 
         <!-- 生成映射文件存放位置 -->
-        <sqlMapGenerator targetPackage="sqlMap" targetProject="sbs-biz/src/main/resources">
+        <sqlMapGenerator targetPackage="sqlMap" targetProject="sbs-mybatis-generator/src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!-- 不自动生成接口，写一个通用的泛型接口用于继承，解决生成覆盖的问题 -->
         <!-- 生成 Repository 类存放位置
-        <javaClientGenerator type="XMLMAPPER" targetPackage="tmp.repository" targetProject="sbs-mybatis-generator/src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="io.github.miaoxinguo.sbs.repository" targetProject="sbs-mybatis-generator/src/main/java">
             <property name="enableSubPackages" value="true"/>
-            <property name="rootInterface" value="io.github.miaoxinguo.sbs.repository.PageableRepository"/>
+            <property name="rootInterface" value="io.github.miaoxinguo.sbs.repository.GenericRepository"/>
         </javaClientGenerator>-->
 
         <!--生成对应表及类名-->

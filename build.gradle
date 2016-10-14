@@ -10,6 +10,15 @@ buildscript {
 allprojects {
     group 'io.github.miaoxinguo.sbs'
     version '1.0-SNAPSHOT'
+
+    //定义版本号
+    ext {
+        slf4jVersion = '1.7.21'
+        logbackVersion = '1.1.7'
+        junitVersion = '4.12'
+        druidVersion = '1.0.26'
+        hibernateValidatorVersion='5.2.4.Final'
+    }
 }
 
 subprojects {
@@ -18,29 +27,23 @@ subprojects {
 
     [compileJava, javadoc, compileTestJava]*.options*.encoding = 'UTF-8'
 
-    //定义版本号
-    ext {
-        springVersion = '3.2.11.RELEASE'
-        hibernateVersion='4.3.1.Final'
-    }
-
     repositories {
         jcenter()
     }
 
     // 通用依赖
     dependencies {
-        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+        compile group: 'org.slf4j', name: 'slf4j-api', version: "${slf4jVersion}"
 
-        testCompile group: 'junit', name: 'junit', version: '4.12'
+        runtime group: 'ch.qos.logback', name: 'logback-core', version: "${logbackVersion}"
+        runtime group: 'ch.qos.logback', name: 'logback-classic', version: "${logbackVersion}"
+
+        testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
     }
 
 }
 
 project(':sbs-core') {
-    // jar包的名字
-    archivesBaseName = 'sbs-core'
-
     dependencies {
         compile group: 'com.alibaba', name: 'fastjson', version: '1.2.16'
         compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
@@ -51,12 +54,11 @@ project(':sbs-core') {
 }
 
 project(':sbs-mybatis') {
-    archivesBaseName = 'sbs-mybatis'
-
     dependencies {
         compile project(":sbs-core")
 
-        compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1")
+        compile group: 'org.mybatis', name: 'mybatis', version: '3.4.1'
+        compile group: 'org.mybatis', name: 'mybatis-spring', version: '1.3.0'
 
         runtime 'mysql:mysql-connector-java:5.1.35'
     }
@@ -71,8 +73,6 @@ project(':sbs-mybatis-generator') {
 }
 
 project(':sbs-biz') {
-    archivesBaseName = 'sbs-biz'
-
     dependencies {
         compile project(":sbs-core")
         compile project(":sbs-mybatis")
@@ -82,8 +82,6 @@ project(':sbs-biz') {
 }
 
 project(':sbs-server') {
-    archivesBaseName = 'sbs-server'
-
     apply plugin: 'spring-boot'
 
     dependencies {
@@ -92,17 +90,13 @@ project(':sbs-server') {
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-data-redis")
-        compile group: 'com.alibaba', name: 'druid', version: '1.0.26'
-
-        runtime 'mysql:mysql-connector-java:5.1.35'
+        compile group: 'com.alibaba', name: 'druid', version: "${druidVersion}"
 
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
 
 project(':sbs-admin') {
-    archivesBaseName = 'sbs-admin'
-
     apply plugin: 'spring-boot'
 
     dependencies {
@@ -110,11 +104,8 @@ project(':sbs-admin') {
 
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.boot:spring-boot-starter-aop")
-        compile group: 'com.alibaba', name: 'druid', version: '1.0.26'
-
-        compile 'org.hibernate:hibernate-validator:5.1.3.Final'
-
-        runtime 'mysql:mysql-connector-java:5.1.35'
+        compile group: 'com.alibaba', name: 'druid', version: "${druidVersion}"
+        compile group: 'org.hibernate', name: 'hibernate-validator', version: "${hibernateValidatorVersion}"
 
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }

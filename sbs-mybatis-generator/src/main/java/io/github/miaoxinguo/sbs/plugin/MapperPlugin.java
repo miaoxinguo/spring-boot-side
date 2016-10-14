@@ -11,7 +11,6 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.BaseColumnListE
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeySelectiveElementGenerator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,6 +35,7 @@ public class MapperPlugin extends PluginAdapter {
     }
 
     // ------------  按接口中的方法名修改映射器文件中的id
+
     @Override
     public boolean sqlMapDeleteByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
         replaceIdValue(element, "deleteById");
@@ -56,6 +56,9 @@ public class MapperPlugin extends PluginAdapter {
 
     @Override
     public boolean sqlMapSelectByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        element.getAttributes().removeIf(attribute -> attribute.getName().equals("resultMap"));
+
+        element.addAttribute(new Attribute("resultType", introspectedTable.getBaseRecordType()));
         replaceIdValue(element, "selectById");
         return true;
     }
@@ -64,13 +67,7 @@ public class MapperPlugin extends PluginAdapter {
      * 替换 id 的值为接口中的方法名
      */
     private void replaceIdValue(XmlElement element, String newValue) {
-        Iterator<Attribute> it = element.getAttributes().iterator();
-        while(it.hasNext()) {
-            if(it.next().getName().equals("id")) {
-                it.remove();
-                break;
-            }
-        }
+        element.getAttributes().removeIf(attribute -> attribute.getName().equals("id"));
         element.getAttributes().add(new Attribute("id", newValue));
     }
 
@@ -80,20 +77,17 @@ public class MapperPlugin extends PluginAdapter {
         return false;
     }
 
+
     /**
      * 当 doc 生成后执行
      */
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
         // 替换 namespace
-        Iterator<Attribute> it = document.getRootElement().getAttributes().iterator();
-        while (it.hasNext()) {
-            if (it.next().getName().equals("namespace")) {
-                it.remove();
-                break;
-            }
-        }
-        document.getRootElement().addAttribute(new Attribute("namespace", introspectedTable.getBaseRecordType()));
+        document.getRootElement().getAttributes().removeIf(attribute -> attribute.getName().equals("namespace"));
+        String entityName = introspectedTable.getBaseRecordType();
+        String namespace =  context.getProperty("namespace") + entityName.substring(entityName.lastIndexOf(".")) +"Repository";
+        document.getRootElement().addAttribute(new Attribute("namespace", namespace));
 
         // 增加方法
         addBaseColumnList(document.getRootElement(), introspectedTable);
