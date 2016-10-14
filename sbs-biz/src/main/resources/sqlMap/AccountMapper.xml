@@ -2,60 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.miaoxinguo.sbs.repository.AccountRepository">
   <resultMap id="BaseResultMap" type="io.github.miaoxinguo.sbs.entity.Account">
-    <!--
-      @mbg.generated
-    -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="balance" jdbcType="DECIMAL" property="balance" />
-    <result column="user_id" jdbcType="INTEGER" property="user" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <association column="user_id" jdbcType="INTEGER" property="user" />
   </resultMap>
   
   <sql id="Base_Column_List">
-    <!--
-      @mbg.generated
-    -->
-    id, name, type, balance, user_id
+    id, name, type, balance, user_id, create_time, update_time
   </sql>
   
   <insert id="insert" parameterType="io.github.miaoxinguo.sbs.entity.Account">
-    <!--
-      @mbg.generated
-    -->
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into account (name, type, balance, 
-      user_id)
+    insert into account (name, type, balance, user_id)
     values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{balance,jdbcType=DECIMAL}, 
-      #{user,jdbcType=INTEGER})
+      #{user.id,jdbcType=INTEGER}
+      )
   </insert>
   
   <delete id="deleteById" parameterType="java.lang.Integer">
-    <!--
-      @mbg.generated
-    -->
     delete from account
     where id = #{id,jdbcType=INTEGER}
   </delete>
   
   <update id="update" parameterType="io.github.miaoxinguo.sbs.entity.Account">
-    <!--
-      @mbg.generated
-    -->
     update account
     set name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=TINYINT},
       balance = #{balance,jdbcType=DECIMAL},
-      user_id = #{user,jdbcType=INTEGER}
+      user_id = #{user.id,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
   <update id="updateSelectiveById" parameterType="io.github.miaoxinguo.sbs.entity.Account">
-    <!--
-      @mbg.generated
-    -->
     update account
     <set>
       <if test="name != null">
@@ -68,17 +54,20 @@
         balance = #{balance,jdbcType=DECIMAL},
       </if>
       <if test="user != null">
-        user_id = #{user,jdbcType=INTEGER},
+        user_id = #{user.id,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   
   <select id="selectById" parameterType="java.lang.Integer" resultType="io.github.miaoxinguo.sbs.entity.Account">
-    <!--
-      @mbg.generated
-    -->
-    select id, name, type, balance, user_id
+    select id, name, type, balance, user_id, create_time, update_time
     from account
     where id = #{id,jdbcType=INTEGER}
   </select>

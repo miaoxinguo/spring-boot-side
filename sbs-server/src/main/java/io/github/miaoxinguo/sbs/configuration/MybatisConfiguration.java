@@ -6,12 +6,9 @@ import io.github.miaoxinguo.sbs.repository.MarkerRepository;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
-import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -23,24 +20,24 @@ import javax.sql.DataSource;
  * Mybatis 配置类
  */
 @Configuration
-@AutoConfigureAfter({ DbConfiguration.class })
+@AutoConfigureAfter({ DataSourceConfiguration.class })
 @MapperScan(basePackageClasses = MarkerRepository.class, markerInterface = GenericRepository.class)
-@EnableConfigurationProperties(MybatisProperties.class)
 public class MybatisConfiguration {
 
-    private final DataSource masterDataSource;
-
     @Autowired
-    public MybatisConfiguration(DataSource masterDataSource) {
-        this.masterDataSource = masterDataSource;
-    }
+    private DataSource masterDataSource;
+
+//    @Autowired
+//    public MybatisConfiguration(DataSource masterDataSource) {
+//        this.masterDataSource = masterDataSource;
+//    }
 
     @Bean
     @ConditionalOnMissingBean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(masterDataSource);
-        sessionFactory.setVfs(SpringBootVFS.class);
+//        sessionFactory.setVfs(SpringBootVFS.class);
 
         // 设置配置文件路径（可以把配置文件的内容都用代码写在这里，不用配置文件）
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

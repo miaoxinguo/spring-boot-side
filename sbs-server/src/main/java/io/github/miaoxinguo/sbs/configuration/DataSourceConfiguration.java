@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -17,14 +18,14 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableTransactionManagement
-public class DbConfiguration {
+public class DataSourceConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DbConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfiguration.class);
 
     private final Environment env;
 
     @Autowired
-    public DbConfiguration(Environment env) {
+    public DataSourceConfiguration(Environment env) {
         this.env = env;
     }
 
@@ -42,5 +43,16 @@ public class DbConfiguration {
 
         return dataSource;
     }
+
+    /**
+     * 主库JdbcTemplate
+     */
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        jdbcTemplate.setDataSource(dataSource());
+        return jdbcTemplate;
+    }
+
 
 }

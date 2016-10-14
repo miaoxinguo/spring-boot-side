@@ -12,8 +12,10 @@
 
         <plugin type="io.github.miaoxinguo.sbs.plugin.MapperPlugin"/>
 
-        <!-- 设置注释：显示数据库的注释，定义生成时间格式 -->
-        <commentGenerator type="io.github.miaoxinguo.sbs.comment.CustomerCommentGenerator"/>
+        <!--<commentGenerator type="io.github.miaoxinguo.sbs.comment.CustomerCommentGenerator">-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/sbs"
