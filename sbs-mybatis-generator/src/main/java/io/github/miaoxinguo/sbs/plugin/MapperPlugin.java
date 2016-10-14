@@ -85,7 +85,17 @@ public class MapperPlugin extends PluginAdapter {
      */
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
+        // 替换 namespace
+        Iterator<Attribute> it = document.getRootElement().getAttributes().iterator();
+        while (it.hasNext()) {
+            if (it.next().getName().equals("namespace")) {
+                it.remove();
+                break;
+            }
+        }
+        document.getRootElement().addAttribute(new Attribute("namespace", introspectedTable.getBaseRecordType()));
 
+        // 增加方法
         addBaseColumnList(document.getRootElement(), introspectedTable);
         addUpdateSelectiveById(document.getRootElement(), introspectedTable);
 

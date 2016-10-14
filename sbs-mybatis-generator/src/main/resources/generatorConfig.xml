@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
 
-    <context id="default" targetRuntime="MyBatis3Simple">
+    <context id="default" targetRuntime="MyBatis3">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
@@ -45,7 +45,7 @@
         </javaModelGenerator>
 
         <!-- 生成映射文件存放位置 -->
-        <sqlMapGenerator targetPackage="sqlMap" targetProject="sbs-mybatis/src/main/resources">
+        <sqlMapGenerator targetPackage="sqlMap" targetProject="sbs-biz/src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 

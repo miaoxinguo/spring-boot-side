@@ -27,6 +27,7 @@ import javax.sql.DataSource;
 @MapperScan(basePackageClasses = MarkerRepository.class, markerInterface = GenericRepository.class)
 @EnableConfigurationProperties(MybatisProperties.class)
 public class MybatisConfiguration {
+
     private final DataSource masterDataSource;
 
     @Autowired
@@ -34,38 +35,25 @@ public class MybatisConfiguration {
         this.masterDataSource = masterDataSource;
     }
 
-
     @Bean
     @ConditionalOnMissingBean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
-
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(masterDataSource);
         sessionFactory.setVfs(SpringBootVFS.class);
 
-        // 设置配置文件路径
+        // 设置配置文件路径（可以把配置文件的内容都用代码写在这里，不用配置文件）
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-//        sessionFactory.setConfigLocation(resolver.getResource("classpath:mybatis-config.xml"));
+        sessionFactory.setConfigLocation(resolver.getResource("classpath:mybatis-config.xml"));
 
         // 添加 entity 的类型
         sessionFactory.setTypeAliasesSuperType(BaseEntity.class);
 
-        // 添加 map.xml 的目录
+        // 添加 map.xml 的目录（路径也可以写在 application.yml 里）
         sessionFactory.setMapperLocations(resolver.getResources("classpath:sqlMap/*Mapper.xml"));
 
-        //分页插件 //4
-//        PageHelper pageHelper = new PageHelper();
-//        Properties properties = new Properties();
-//        properties.setProperty("reasonable", "true");
-//        properties.setProperty("supportMethodsArguments", "true");
-//        properties.setProperty("returnPageInfo", "check");
-//        properties.setProperty("params", "count=countSql");
-//        pageHelper.setProperties(properties);
-        //添加插件
-//        bean.setPlugins(new Interceptor[]{pageHelper});
-
+        // 添加 typeHandler
         sessionFactory.setTypeHandlersPackage("io.github.miaoxinguo.sbs.typeHandler");
-
 
         return sessionFactory.getObject();
     }

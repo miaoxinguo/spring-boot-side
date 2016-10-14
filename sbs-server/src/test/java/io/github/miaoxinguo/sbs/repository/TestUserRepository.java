@@ -18,6 +18,7 @@ public class TestUserRepository {
     @Test
     public void testFindById() {
         User user = userRepository.selectById(1);
-        System.out.println(user.toString());
+        System.out.println(user);
     }
+
 }
