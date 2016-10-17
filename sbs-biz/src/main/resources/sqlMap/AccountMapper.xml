@@ -71,4 +71,9 @@
     from account
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByQueryObject" parameterType="io.github.miaoxinguo.sbs.qo.AccountQueryObject" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from account
+  </select>
 </mapper>

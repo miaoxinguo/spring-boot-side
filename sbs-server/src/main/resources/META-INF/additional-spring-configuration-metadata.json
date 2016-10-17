@@ -4,6 +4,16 @@
       "name": "datasource.master.url",
       "type": "java.lang.String",
       "description": "Description for datasource.master.url."
+    },
+    {
+      "name": "datasource.master.username",
+      "type": "java.lang.String",
+      "description": "Description for datasource.master.username."
+    },
+    {
+      "name": "datasource.master.password",
+      "type": "java.lang.String",
+      "description": "Description for datasource.master.password."
     }
   ]
 }

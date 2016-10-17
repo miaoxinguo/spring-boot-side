@@ -1,4 +1,4 @@
-package io.github.miaoxinguo.sbs.modal;
+package io.github.miaoxinguo.sbs;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 分页查询结果
  */
-public class PageResult<T> implements Serializable{
+public class PageResult<T> implements Serializable {
 
     // 当前页
     private int currentPage = 1;

@@ -36,10 +36,6 @@ abstract class PageInterceptor implements Interceptor {
 
     }
 
-    protected boolean isPageSql(String statement) {
-        return statement != null ;
-    }
-
 //    protected String buildCountStatement(String statement) {
 //        return statement.substring(0, statement.lastIndexOf(pageSql)) + countSql;
 //    }

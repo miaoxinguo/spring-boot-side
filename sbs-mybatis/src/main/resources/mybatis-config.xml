@@ -11,8 +11,8 @@
         <setting name="lazyLoadingEnabled" value="false"/>
     </settings>
 
-    <!--<plugins>-->
-        <!--<plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PagePrepareInterceptor"/>-->
-        <!--<plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageResultInterceptor"/>-->
-    <!--</plugins>-->
+    <plugins>
+        <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PagePrepareInterceptor"/>
+        <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageResultInterceptor"/>
+    </plugins>
 </configuration>

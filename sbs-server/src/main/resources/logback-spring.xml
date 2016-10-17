@@ -18,16 +18,16 @@
         </appender>
 
         <!-- logger configure -->
+        <logger name="javax.management" level="WARN"/>
         <logger name="org.springframework" level="WARN"/>
         <logger name="org.springframework.boot.context.embedded" level="INFO"/>
         <logger name="org.apache" level="WARN"/>
         <logger name="org.quartz" level="WARN"/>
-        <logger name="com.mchange" level="WARN"/>
+        <logger name="org.mybatis" level="WARN"/>
         <logger name="org.hibernate.validator" level="WARN"/>
-        <logger name="net.sf.ehcache" level="WARN"/>
 
         <!-- 日志输出级别 -->
-        <root level="INFO">
+        <root level="TRACE">
             <appender-ref ref="STDOUT"/>
         </root>
 
