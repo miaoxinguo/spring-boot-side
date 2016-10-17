@@ -3,6 +3,7 @@ package io.github.miaoxinguo.sbs.configuration;
 import io.github.miaoxinguo.sbs.entity.BaseEntity;
 import io.github.miaoxinguo.sbs.repository.GenericRepository;
 import io.github.miaoxinguo.sbs.repository.MarkerRepository;
+import io.github.miaoxinguo.sbs.vfs.SpringBootVFS;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -24,20 +25,19 @@ import javax.sql.DataSource;
 @MapperScan(basePackageClasses = MarkerRepository.class, markerInterface = GenericRepository.class)
 public class MybatisConfiguration {
 
-    @Autowired
-    private DataSource masterDataSource;
+    private final DataSource masterDataSource;
 
-//    @Autowired
-//    public MybatisConfiguration(DataSource masterDataSource) {
-//        this.masterDataSource = masterDataSource;
-//    }
+    @Autowired
+    public MybatisConfiguration(DataSource masterDataSource) {
+        this.masterDataSource = masterDataSource;
+    }
 
     @Bean
     @ConditionalOnMissingBean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(masterDataSource);
-//        sessionFactory.setVfs(SpringBootVFS.class);
+        sessionFactory.setVfs(SpringBootVFS.class);
 
         // 设置配置文件路径（可以把配置文件的内容都用代码写在这里，不用配置文件）
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
