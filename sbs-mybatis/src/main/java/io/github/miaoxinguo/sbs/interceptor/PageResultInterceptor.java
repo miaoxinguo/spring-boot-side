@@ -5,6 +5,7 @@ import io.github.miaoxinguo.sbs.qo.PageableQueryObject;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
@@ -34,19 +35,20 @@ public class PageResultInterceptor extends PageInterceptor {
                 new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
 
         // Configuration、 BoundSql 对象
-        Configuration configuration = (Configuration) metaObject.getValue("delegate.configuration");
-
-
+        Configuration configuration = (Configuration) metaObject.getValue("configuration");
         BoundSql boundSql = (BoundSql) metaObject.getValue("boundSql");
 
         // 是否是分页 sql
-        if(!(boundSql.getParameterObject() instanceof PageableQueryObject)) {
+        if(!isPageSql(boundSql.getParameterObject())) {
             return invocation.proceed();
         }
 
-        Executor executor = (Executor) metaObject.getValue("delegate.executor");
+        MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("mappedStatement");
+        String countStatement = buildCountStatement(mappedStatement.getId());
+
         PageableQueryObject pageQueryObject = (PageableQueryObject) boundSql.getParameterObject();
-        String countStatement = buildCountStatement();
+        Executor executor = (Executor) metaObject.getValue("executor");
+
         List<Integer> count = executor.query(configuration.getMappedStatement(countStatement), pageQueryObject, RowBounds.DEFAULT, null);
 
         List<PageResult> result = new ArrayList<>(1);
@@ -61,9 +63,9 @@ public class PageResultInterceptor extends PageInterceptor {
     }
 
     /**
-     *
+     * 获取查询数量的sql id，要求 id 必须全局统一
      */
-    private String buildCountStatement() {
-
+    private String buildCountStatement(String statement) {
+        return statement.substring(0, statement.lastIndexOf(".")) + ".selectCountByQueryObject";
     }
 }

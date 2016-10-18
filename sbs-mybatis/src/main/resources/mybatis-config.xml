@@ -13,6 +13,6 @@
 
     <plugins>
         <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PagePrepareInterceptor"/>
-        <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageResultInterceptor"/>
+        <!--<plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageResultInterceptor"/>-->
     </plugins>
 </configuration>

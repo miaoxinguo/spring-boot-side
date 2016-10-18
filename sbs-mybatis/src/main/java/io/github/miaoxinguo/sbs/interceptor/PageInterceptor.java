@@ -1,5 +1,6 @@
 package io.github.miaoxinguo.sbs.interceptor;
 
+import io.github.miaoxinguo.sbs.qo.PageableQueryObject;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Plugin;
 import org.slf4j.Logger;
@@ -34,6 +35,13 @@ abstract class PageInterceptor implements Interceptor {
     @Override
     public void setProperties(Properties properties) {
 
+    }
+
+    /**
+     * 根据参数对象判断是否是分页sql
+     */
+    protected boolean isPageSql(Object parameterObject) {
+        return parameterObject instanceof PageableQueryObject;
     }
 
 //    protected String buildCountStatement(String statement) {

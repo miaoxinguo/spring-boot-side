@@ -76,4 +76,8 @@
     select <include refid="Base_Column_List"/>
     from account
   </select>
+
+  <select id="selectCountByQueryObject" resultMap="BaseResultMap">
+    select count(*) from account
+  </select>
 </mapper>
