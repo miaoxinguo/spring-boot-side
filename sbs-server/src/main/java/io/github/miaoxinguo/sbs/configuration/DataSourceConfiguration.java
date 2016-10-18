@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -41,8 +41,8 @@ public class DataSourceConfiguration {
         RoutingDataSource dataSource = new RoutingDataSource();
 
         Map<Object, Object> map = new HashMap<>();
-        map.put("dataSourceMaster", dataSourceMaster());
-        map.put("dataSourceSlave1", dataSourceSlave1());
+        map.put(DataSourceType.MASTER, dataSourceMaster());
+        map.put(DataSourceType.SLAVE_1, dataSourceSlave1());
         dataSource.setTargetDataSources(map);
 
         dataSource.setDefaultTargetDataSource(dataSourceMaster());
@@ -52,7 +52,7 @@ public class DataSourceConfiguration {
     /**
      * 主库
      */
-    @Bean(name = DataSourceType.MASTER , autowire = Autowire.BY_NAME)
+    @Bean(name = DataSourceType.MASTER, autowire = Autowire.BY_NAME)
     public DataSource dataSourceMaster() {
         LOGGER.info("master db url = {}", env.getProperty("datasource.master.url"));
 
@@ -75,19 +75,11 @@ public class DataSourceConfiguration {
         dataSource.setUrl(env.getProperty("datasource.master.url"));
         dataSource.setUsername(env.getProperty("datasource.master.username"));
         dataSource.setPassword(env.getProperty("datasource.master.password"));
-
         return dataSource;
     }
 
-    /**
-     * 主库JdbcTemplate
-     */
     @Bean
-    public JdbcTemplate jdbcTemplate() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        jdbcTemplate.setDataSource(dataSource());
-        return jdbcTemplate;
+    public DataSourceTransactionManager dataSourceTransactionManager() {
+        return new DataSourceTransactionManager(dataSourceMaster());
     }
-
-
 }

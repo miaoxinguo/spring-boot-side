@@ -1,7 +1,7 @@
 package io.github.miaoxinguo.sbs.interceptor;
 
 import io.github.miaoxinguo.sbs.DataSourceType;
-import io.github.miaoxinguo.sbs.DataSourceTypeHolder;
+import io.github.miaoxinguo.sbs.RoutingDataSource;
 import io.github.miaoxinguo.sbs.dialect.Dialect;
 import io.github.miaoxinguo.sbs.dialect.MySql5Dialect;
 import io.github.miaoxinguo.sbs.qo.PageableQueryObject;
@@ -97,10 +97,10 @@ public class PagePrepareInterceptor extends PageInterceptor {
         if(sqlCommandType.equals(SqlCommandType.SELECT)) {
             int count = SLAVES.size();
             String dataSource = DataSourceType.SLAVES.get(RandomUtils.nextInt(0, count));
-            DataSourceTypeHolder.setDataSource(dataSource);
+            RoutingDataSource.setDataSource(dataSource);
         }
         else {
-            DataSourceTypeHolder.setDataSource(DataSourceType.MASTER);
+            RoutingDataSource.setDataSource(DataSourceType.MASTER);
         }
     }
 
