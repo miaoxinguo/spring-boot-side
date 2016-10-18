@@ -1,11 +1,11 @@
 package io.github.miaoxinguo.sbs.configuration;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import io.github.miaoxinguo.sbs.RoutingDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 数据库配置类
@@ -31,12 +33,42 @@ public class DataSourceConfiguration {
     }
 
     /**
-     * 主数据源
+     * 路由数据源
      */
     @Bean(name = "dataSource", autowire = Autowire.BY_NAME)
     public DataSource dataSource() {
-        DataSourceBuilder.create();
+        RoutingDataSource dataSource = new RoutingDataSource();
+
+        Map<Object, Object> map = new HashMap<>();
+        map.put("dataSourceMaster", dataSourceMaster());
+        map.put("dataSourceSlave1", dataSourceSlave1());
+        dataSource.setTargetDataSources(map);
+
+        dataSource.setDefaultTargetDataSource(dataSourceMaster());
+        return dataSource;
+    }
+
+    /**
+     * 主库
+     */
+    @Bean(name = "dataSourceMaster", autowire = Autowire.BY_NAME)
+    public DataSource dataSourceMaster() {
         LOGGER.info("master db url = {}", env.getProperty("datasource.master.url"));
+
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUrl(env.getProperty("datasource.master.url"));
+        dataSource.setUsername(env.getProperty("datasource.master.username"));
+        dataSource.setPassword(env.getProperty("datasource.master.password"));
+
+        return dataSource;
+    }
+
+    /**
+     * 只读从库-1
+     */
+    @Bean(name = "dataSourceSlave1", autowire = Autowire.BY_NAME)
+    public DataSource dataSourceSlave1() {
+        LOGGER.info("slave-1 db url = {}", env.getProperty("datasource.master.url"));
 
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUrl(env.getProperty("datasource.master.url"));

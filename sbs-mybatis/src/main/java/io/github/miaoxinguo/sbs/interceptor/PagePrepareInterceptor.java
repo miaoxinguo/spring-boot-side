@@ -1,10 +1,13 @@
 package io.github.miaoxinguo.sbs.interceptor;
 
+import io.github.miaoxinguo.sbs.DataSourceTypeHolder;
 import io.github.miaoxinguo.sbs.dialect.Dialect;
 import io.github.miaoxinguo.sbs.dialect.MySql5Dialect;
 import io.github.miaoxinguo.sbs.qo.PageableQueryObject;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
@@ -29,20 +32,35 @@ public class PagePrepareInterceptor extends PageInterceptor {
         LOGGER.trace("Interceptor StatementHandler.prepare start...");
         StatementHandler handler = (StatementHandler) invocation.getTarget(); // 默认是 RoutingStatementHandler
 
+        // MetaObject 是 Mybatis提供的一个的工具类，通过它包装一个对象后可以获取或设置该对象的原本不可访问的属性（比如那些私有属性）
+        MetaObject metaObject = MetaObject.forObject(handler,
+                new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
+
+        // 1、根据sql类型设置数据源
+        MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
+        this.setDataSource(mappedStatement.getSqlCommandType());
+
+        // 2、组装分页 sql
+        buildPageSql(handler, metaObject);
+
+
+        return invocation.proceed();
+    }
+
+    /**
+     * 组装分页 sql
+     */
+    private void buildPageSql(StatementHandler handler, MetaObject metaObject) throws Throwable {
         BoundSql boundSql = handler.getBoundSql();
         String sql = boundSql.getSql();
         LOGGER.debug("original SQL: {}", sql);
 
         if (sql == null || sql.trim().isEmpty() || sql.contains(" limit ")) {
-            return invocation.proceed();
+            return;
         }
         if(!isPageSql(boundSql.getParameterObject())) {
-            return invocation.proceed();
+            return;
         }
-
-        // MetaObject 是 Mybatis提供的一个的工具类，通过它包装一个对象后可以获取或设置该对象的原本不可访问的属性（比如那些私有属性）
-        MetaObject metaObject = MetaObject.forObject(handler,
-                new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
 
         // 获取 Configuration对象
         // delegate 是定义在 RoutingStatementHandler 中的属性，实际的对象是真正执行方法的 StatementHandler
@@ -66,7 +84,18 @@ public class PagePrepareInterceptor extends PageInterceptor {
 
         LOGGER.debug("pagination SQL: {}", sql);
         LOGGER.trace("Interceptor StatementHandler.prepare end");
-        return invocation.proceed();
+    }
+
+    /**
+     * 根据 sql 类型 设置使用哪个数据源
+     */
+    private void setDataSource(SqlCommandType sqlCommandType) {
+        if(sqlCommandType.equals(SqlCommandType.SELECT)) {
+            DataSourceTypeHolder.setDataSource("dataSourceSlave1");
+        }
+        else {
+            DataSourceTypeHolder.setDataSource("dataSourceMaster");
+        }
     }
 
 }

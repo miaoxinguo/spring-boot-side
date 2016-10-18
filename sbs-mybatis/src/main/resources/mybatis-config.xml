@@ -11,8 +11,17 @@
         <setting name="lazyLoadingEnabled" value="false"/>
     </settings>
 
+    <typeAliases>
+        <package name="io.github.miaoxinguo.sbs.entity"/>
+    </typeAliases>
+
+    <typeHandlers>
+        <package name="io.github.miaoxinguo.sbs.typeHandler"/>
+    </typeHandlers>
+
     <plugins>
         <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PagePrepareInterceptor"/>
         <!--<plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageResultInterceptor"/>-->
     </plugins>
+
 </configuration>

@@ -1,8 +1,7 @@
 package io.github.miaoxinguo.sbs.configuration;
 
-import io.github.miaoxinguo.sbs.entity.BaseEntity;
+import io.github.miaoxinguo.sbs.repository.BasePackage;
 import io.github.miaoxinguo.sbs.repository.GenericRepository;
-import io.github.miaoxinguo.sbs.repository.MarkerRepository;
 import io.github.miaoxinguo.sbs.vfs.SpringBootVFS;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -18,39 +17,35 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import javax.sql.DataSource;
 
 /**
- * Mybatis 配置类
+ * Mybatis 配置类.
+ *
+ * 目前的做法是加载配置文件. 也可以把配置文件的内容都用代码写在这里，不用配置文件.
  */
 @Configuration
 @AutoConfigureAfter({ DataSourceConfiguration.class })
-@MapperScan(basePackageClasses = MarkerRepository.class, markerInterface = GenericRepository.class)
+@MapperScan(basePackageClasses = BasePackage.class, markerInterface = GenericRepository.class)
 public class MybatisConfiguration {
 
-    private final DataSource masterDataSource;
+    private final DataSource dataSource;
 
     @Autowired
-    public MybatisConfiguration(DataSource masterDataSource) {
-        this.masterDataSource = masterDataSource;
+    public MybatisConfiguration(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Bean
     @ConditionalOnMissingBean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(masterDataSource);
+        sessionFactory.setDataSource(dataSource);
         sessionFactory.setVfs(SpringBootVFS.class);
 
-        // 设置配置文件路径（可以把配置文件的内容都用代码写在这里，不用配置文件）
+        // 设置配置文件路径（）
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sessionFactory.setConfigLocation(resolver.getResource("classpath:mybatis-config.xml"));
 
-        // 添加 entity 的类型
-        sessionFactory.setTypeAliasesSuperType(BaseEntity.class);
-
-        // 添加 map.xml 的目录（路径也可以写在 application.yml 里）
+        // 添加 mapper.xml 的目录
         sessionFactory.setMapperLocations(resolver.getResources("classpath:sqlMap/*Mapper.xml"));
-
-        // 添加 typeHandler
-        sessionFactory.setTypeHandlersPackage("io.github.miaoxinguo.sbs.typeHandler");
 
         return sessionFactory.getObject();
     }

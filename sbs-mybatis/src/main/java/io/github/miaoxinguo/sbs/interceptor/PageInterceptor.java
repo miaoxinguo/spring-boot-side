@@ -44,7 +44,4 @@ abstract class PageInterceptor implements Interceptor {
         return parameterObject instanceof PageableQueryObject;
     }
 
-//    protected String buildCountStatement(String statement) {
-//        return statement.substring(0, statement.lastIndexOf(pageSql)) + countSql;
-//    }
 }
