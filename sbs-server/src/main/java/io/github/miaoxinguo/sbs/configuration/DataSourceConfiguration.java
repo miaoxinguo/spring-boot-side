@@ -1,6 +1,7 @@
 package io.github.miaoxinguo.sbs.configuration;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import io.github.miaoxinguo.sbs.DataSourceType;
 import io.github.miaoxinguo.sbs.RoutingDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class DataSourceConfiguration {
     /**
      * 主库
      */
-    @Bean(name = "dataSourceMaster", autowire = Autowire.BY_NAME)
+    @Bean(name = DataSourceType.MASTER , autowire = Autowire.BY_NAME)
     public DataSource dataSourceMaster() {
         LOGGER.info("master db url = {}", env.getProperty("datasource.master.url"));
 
@@ -66,7 +67,7 @@ public class DataSourceConfiguration {
     /**
      * 只读从库-1
      */
-    @Bean(name = "dataSourceSlave1", autowire = Autowire.BY_NAME)
+    @Bean(name = DataSourceType.SLAVE_1, autowire = Autowire.BY_NAME)
     public DataSource dataSourceSlave1() {
         LOGGER.info("slave-1 db url = {}", env.getProperty("datasource.master.url"));
 

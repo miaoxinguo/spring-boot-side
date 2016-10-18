@@ -1,9 +1,11 @@
 package io.github.miaoxinguo.sbs.interceptor;
 
+import io.github.miaoxinguo.sbs.DataSourceType;
 import io.github.miaoxinguo.sbs.DataSourceTypeHolder;
 import io.github.miaoxinguo.sbs.dialect.Dialect;
 import io.github.miaoxinguo.sbs.dialect.MySql5Dialect;
 import io.github.miaoxinguo.sbs.qo.PageableQueryObject;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -20,6 +22,8 @@ import org.apache.ibatis.session.RowBounds;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import static io.github.miaoxinguo.sbs.DataSourceType.SLAVES;
 
 /**
  * 拦截 StatementHandler 的 prepare 方法， 组装 sql
@@ -91,10 +95,12 @@ public class PagePrepareInterceptor extends PageInterceptor {
      */
     private void setDataSource(SqlCommandType sqlCommandType) {
         if(sqlCommandType.equals(SqlCommandType.SELECT)) {
-            DataSourceTypeHolder.setDataSource("dataSourceSlave1");
+            int count = SLAVES.size();
+            String dataSource = DataSourceType.SLAVES.get(RandomUtils.nextInt(0, count));
+            DataSourceTypeHolder.setDataSource(dataSource);
         }
         else {
-            DataSourceTypeHolder.setDataSource("dataSourceMaster");
+            DataSourceTypeHolder.setDataSource(DataSourceType.MASTER);
         }
     }
 
