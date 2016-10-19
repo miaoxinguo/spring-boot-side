@@ -28,7 +28,9 @@ public class TestAccountService {
         user.setId(1);
         account.setUser(user);
 
-        accountService.add(account);
+        Integer id = accountService.add(account);
+
+        System.out.println(accountService.getById(id));
     }
 
     @Test

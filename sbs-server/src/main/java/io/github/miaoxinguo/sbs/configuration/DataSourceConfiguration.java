@@ -78,8 +78,11 @@ public class DataSourceConfiguration {
         return dataSource;
     }
 
+    /**
+     * 配置事务管理器
+     */
     @Bean
     public DataSourceTransactionManager dataSourceTransactionManager() {
-        return new DataSourceTransactionManager(dataSourceMaster());
+        return new DataSourceTransactionManager(dataSource());
     }
 }

@@ -33,7 +33,6 @@ public class PagePrepareInterceptor extends PageInterceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        LOGGER.trace("Interceptor StatementHandler.prepare start...");
         StatementHandler handler = (StatementHandler) invocation.getTarget(); // 默认是 RoutingStatementHandler
 
         // MetaObject 是 Mybatis提供的一个的工具类，通过它包装一个对象后可以获取或设置该对象的原本不可访问的属性（比如那些私有属性）
@@ -47,8 +46,21 @@ public class PagePrepareInterceptor extends PageInterceptor {
         // 2、组装分页 sql
         buildPageSql(handler, metaObject);
 
-
         return invocation.proceed();
+    }
+
+    /**
+     * 根据 sql 类型 设置使用哪个数据源
+     */
+    private void setDataSource(SqlCommandType sqlCommandType) {
+        if(sqlCommandType.equals(SqlCommandType.SELECT)) {
+            int count = SLAVES.size();
+            String dataSource = DataSourceType.SLAVES.get(RandomUtils.nextInt(0, count));
+            RoutingDataSource.setDataSource(dataSource);
+        }
+        else {
+            RoutingDataSource.setDataSource(DataSourceType.MASTER);
+        }
     }
 
     /**
@@ -57,7 +69,6 @@ public class PagePrepareInterceptor extends PageInterceptor {
     private void buildPageSql(StatementHandler handler, MetaObject metaObject) throws Throwable {
         BoundSql boundSql = handler.getBoundSql();
         String sql = boundSql.getSql();
-        LOGGER.debug("original SQL: {}", sql);
 
         if (sql == null || sql.trim().isEmpty() || sql.contains(" limit ")) {
             return;
@@ -85,23 +96,6 @@ public class PagePrepareInterceptor extends PageInterceptor {
         metaObject.setValue("delegate.boundSql.sql", dialect.getPageSql(sql, qo.getPageNum(), qo.getPageSize()));
         metaObject.setValue("delegate.rowBounds.offset", RowBounds.NO_ROW_OFFSET);
         metaObject.setValue("delegate.rowBounds.limit", RowBounds.NO_ROW_LIMIT);
-
-        LOGGER.debug("pagination SQL: {}", sql);
-        LOGGER.trace("Interceptor StatementHandler.prepare end");
-    }
-
-    /**
-     * 根据 sql 类型 设置使用哪个数据源
-     */
-    private void setDataSource(SqlCommandType sqlCommandType) {
-        if(sqlCommandType.equals(SqlCommandType.SELECT)) {
-            int count = SLAVES.size();
-            String dataSource = DataSourceType.SLAVES.get(RandomUtils.nextInt(0, count));
-            RoutingDataSource.setDataSource(dataSource);
-        }
-        else {
-            RoutingDataSource.setDataSource(DataSourceType.MASTER);
-        }
     }
 
 }

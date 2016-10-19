@@ -8,14 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AccountService {
+
     @Autowired
     private AccountRepository accountRepository;
 
     @Transactional
-    public void add(Account account) {
-        accountRepository.insert(account);
-
-        throw new RuntimeException();
+    public Integer add(Account account) {
+        return accountRepository.insert(account);
     }
 
     @Transactional

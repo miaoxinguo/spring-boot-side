@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *  数据源统一命名，所有用到数据源名的地方必须取这里的
  */
 public class DataSourceType {
     public static final String MASTER = "dataSourceMaster";
