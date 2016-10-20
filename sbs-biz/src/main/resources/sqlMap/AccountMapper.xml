@@ -8,7 +8,9 @@
     <result column="balance" jdbcType="DECIMAL" property="balance" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <association column="user_id" jdbcType="INTEGER" property="user" />
+    <association column="user_id" jdbcType="INTEGER" property="user" javaType="User">
+      <id column="id" property="id"/>
+    </association>
   </resultMap>
   
   <sql id="Base_Column_List">
@@ -72,9 +74,8 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectByQueryObject" parameterType="io.github.miaoxinguo.sbs.qo.AccountQueryObject" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from account
+  <select id="selectByQueryObject" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from account
   </select>
 
   <select id="selectCountByQueryObject" resultMap="BaseResultMap">

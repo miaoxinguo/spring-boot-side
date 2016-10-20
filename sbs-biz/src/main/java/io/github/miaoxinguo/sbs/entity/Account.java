@@ -1,8 +1,9 @@
 package io.github.miaoxinguo.sbs.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-public class Account extends BaseEntity{
+public class Account extends BaseEntity {
     private Integer id;
 
     private String name;
@@ -12,6 +13,10 @@ public class Account extends BaseEntity{
     private BigDecimal balance;
 
     private User user;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
 
     public Integer getId() {
         return id;
@@ -51,5 +56,21 @@ public class Account extends BaseEntity{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }

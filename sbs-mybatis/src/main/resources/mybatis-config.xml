@@ -16,12 +16,11 @@
     </typeAliases>
 
     <typeHandlers>
-        <package name="io.github.miaoxinguo.sbs.typeHandler"/>
+        <typeHandler handler="io.github.miaoxinguo.sbs.typeHandler.LocalDateTimeTypeHandler"/>
     </typeHandlers>
 
     <plugins>
-        <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PagePrepareInterceptor"/>
-        <!--<plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PageResultInterceptor"/>-->
+        <plugin interceptor="io.github.miaoxinguo.sbs.interceptor.PrepareInterceptor"/>
     </plugins>
 
 </configuration>
