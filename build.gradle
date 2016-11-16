@@ -90,7 +90,7 @@ project(':sbs-biz') {
 }
 
 // filter by project name
-configure(subprojects.findAll {it.name == 'sbs-server' || it.name == 'sbs-admin'}) {
+configure(subprojects.findAll {it.name == 'sbs-api' || it.name == 'sbs-admin'}) {
     apply plugin: 'spring-boot'
 
     dependencies {
@@ -108,12 +108,4 @@ configure(subprojects.findAll {it.name == 'sbs-server' || it.name == 'sbs-admin'
     }
 
     compileJava.dependsOn(processResources)
-}
-
-project(':sbs-server') {
-
-}
-
-project(':sbs-admin') {
-
 }

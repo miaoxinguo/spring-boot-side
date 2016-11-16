@@ -2,6 +2,7 @@ include 'sbs-core'
 include 'sbs-mybatis'
 include 'sbs-mybatis-generator'
 include 'sbs-biz'
+include 'sbs-web'
 include 'sbs-admin'
-include 'sbs-server'
+include 'sbs-api'
 
