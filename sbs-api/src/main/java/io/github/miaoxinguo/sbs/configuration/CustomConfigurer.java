@@ -14,7 +14,7 @@ import java.util.List;
 public class CustomConfigurer extends WebMvcConfigurerAdapter {
 
     /**
-     * 增加自定义参数解析器Task
+     * 增加自定义参数解析器
      */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {

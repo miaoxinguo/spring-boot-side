@@ -3,7 +3,7 @@ package io.github.miaoxinguo.sbs.repository;
 import java.io.Serializable;
 
 /**
- * 分页查询接口
+ * 泛型接口
  */
 public interface GenericRepository<T, PK extends Serializable> {
 

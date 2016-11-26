@@ -11,7 +11,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@MappedJdbcTypes(JdbcType.TIMESTAMP)  //此处如果不用注解指定jdbcType, 那么，就可以在配置文件中通过"jdbcType"属性指定， 同理， javaType 也可通过 @MappedTypes指定
+/**
+ * 此处如果不用注解指定jdbcType,
+ * 那么，可以在配置文件中通过"jdbcType"属性指定，
+ * 同理， javaType 也可通过 @MappedTypes指定
+ */
+@MappedJdbcTypes(JdbcType.TIMESTAMP)
 public class LocalDateTimeTypeHandler extends BaseTypeHandler<LocalDateTime> {
 
     @Override

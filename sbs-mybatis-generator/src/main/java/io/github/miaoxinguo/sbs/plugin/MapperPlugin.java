@@ -37,7 +37,6 @@ public class MapperPlugin extends PluginAdapter {
     }
 
     // ------------  按接口中的方法名修改映射器文件中的id
-
     @Override
     public boolean sqlMapDeleteByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
         replaceIdValue(element, "deleteById");
@@ -65,8 +64,11 @@ public class MapperPlugin extends PluginAdapter {
         return true;
     }
 
-    /*
-     * 替换 id 的值为接口中的方法名
+    /**
+     * 替换标签中 id 的值为接口中的方法名
+     *
+     * @param element 标签元素
+     * @param newValue 新名，即repository接口中对应的方法名
      */
     private void replaceIdValue(XmlElement element, String newValue) {
         element.getAttributes().removeIf(attribute -> attribute.getName().equals("id"));
@@ -84,7 +86,7 @@ public class MapperPlugin extends PluginAdapter {
         try {
             Field field = sqlMap.getClass().getDeclaredField("isMergeable");
             field.setAccessible(true);
-            field.setBoolean(sqlMap, false);
+            field.setBoolean(sqlMap, false);  // 设置不合并，覆盖原内容
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,7 +137,7 @@ public class MapperPlugin extends PluginAdapter {
     }
 
     /**
-     * 增加 sql 片段, base columns, 即所有列
+     * 增加方法： updateSelectiveById（更新有值的字段）
      *
      * @see org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeySelectiveElementGenerator
      */

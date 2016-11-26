@@ -23,10 +23,8 @@ public class CustomerCommentGenerator extends DefaultCommentGenerator {
     public void addComment(XmlElement xmlElement) {
         xmlElement.addElement(new TextElement("<!--"));
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("  ").append(MergeConstants.NEW_ELEMENT_TAG);
-//        sb.append(" - 该元素由 Mybatis-Generator 自动创建，不要修改");
-        xmlElement.addElement(new TextElement(sb.toString()));
+        //        sb.append(" - 该元素由 Mybatis-Generator 自动创建，不要修改");
+        xmlElement.addElement(new TextElement("  " + MergeConstants.NEW_ELEMENT_TAG));
         xmlElement.addElement(new TextElement("-->"));
     }
 
