@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
-        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7' // 支持 optional、provided 类型的依赖
     }
 }
 
@@ -90,7 +90,7 @@ project(':sbs-biz') {
 }
 
 // filter by project name
-configure(subprojects.findAll {it.name == 'sbs-api' || it.name == 'sbs-admin'}) {
+configure(subprojects.findAll {it.name == 'sbs-web' || it.name == 'sbs-admin'}) {
     apply plugin: 'spring-boot'
 
     dependencies {
