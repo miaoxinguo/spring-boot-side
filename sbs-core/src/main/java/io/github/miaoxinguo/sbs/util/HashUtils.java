@@ -18,7 +18,7 @@ public final class HashUtils {
     }
 
     /**
-     * MD5 base64格式
+     * MD5 Base64格式
      * 
      * @param text 明文
      * @return Base64散列字符串
@@ -35,6 +35,16 @@ public final class HashUtils {
      */
     public static String md5Hex(String text) {
         return Hex.encodeHexString(hash(text, HASH_ALG_MD5));
+    }
+
+    /**
+     * SHA1 Base64格式
+     *
+     * @param text 明文
+     * @return Base64散列字符串
+     */
+    public static String sha1Base64(String text) {
+        return new String(Base64.encodeBase64(hash(text, HASH_ALG_SHA1)));
     }
 
     /**

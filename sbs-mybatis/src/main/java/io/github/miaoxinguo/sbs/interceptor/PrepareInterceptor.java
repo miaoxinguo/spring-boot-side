@@ -4,8 +4,7 @@ import io.github.miaoxinguo.sbs.DataSourceType;
 import io.github.miaoxinguo.sbs.RoutingDataSource;
 import io.github.miaoxinguo.sbs.dialect.Dialect;
 import io.github.miaoxinguo.sbs.dialect.MySql5Dialect;
-import io.github.miaoxinguo.sbs.qo.PageableQueryObject;
-import org.apache.commons.lang3.RandomUtils;
+import io.github.miaoxinguo.sbs.qo.PageableQo;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -25,6 +24,7 @@ import org.apache.ibatis.session.RowBounds;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.Random;
 
 import static io.github.miaoxinguo.sbs.DataSourceType.SLAVES;
 
@@ -33,6 +33,11 @@ import static io.github.miaoxinguo.sbs.DataSourceType.SLAVES;
  */
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
 public class PrepareInterceptor implements Interceptor {
+    /**
+     * Random object used by random method. This has to be not local to the
+     * random method so as to not return the same value in the same millisecond.
+     */
+    private static final Random RANDOM = new Random();
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -49,7 +54,7 @@ public class PrepareInterceptor implements Interceptor {
         // 2、组装分页 sql
         Class returnType = invocation.getMethod().getReturnType();
         Object parameterObject = handler.getParameterHandler().getParameterObject();
-        if(isPageSql(parameterObject, returnType)) {
+        if(isPagedSql(parameterObject, returnType)) {
             buildPageSql(handler, metaObject);
         }
 
@@ -62,7 +67,7 @@ public class PrepareInterceptor implements Interceptor {
     private void setDataSource(SqlCommandType sqlCommandType) {
         if(sqlCommandType.equals(SqlCommandType.SELECT)) {
             int count = SLAVES.size();
-            String dataSource = DataSourceType.SLAVES.get(RandomUtils.nextInt(0, count));
+            String dataSource = DataSourceType.SLAVES.get(RANDOM.nextInt(count));
             RoutingDataSource.setDataSource(dataSource);
         }
         else {
@@ -96,8 +101,8 @@ public class PrepareInterceptor implements Interceptor {
                 throw new SQLException("'dialect' property is invalid.");
         }
 
-        PageableQueryObject qo = (PageableQueryObject)handler.getParameterHandler().getParameterObject();
-        metaObject.setValue("delegate.boundSql.sql", dialect.getPageSql(sql, qo.getPageNum()-1, qo.getPageSize()));
+        PageableQo qo = (PageableQo)handler.getParameterHandler().getParameterObject();
+        metaObject.setValue("delegate.boundSql.sql", dialect.getPagedSql(sql, qo.getPageNum()-1, qo.getPageSize()));
         metaObject.setValue("delegate.rowBounds.offset", RowBounds.NO_ROW_OFFSET);
         metaObject.setValue("delegate.rowBounds.limit", RowBounds.NO_ROW_LIMIT);
     }
@@ -105,9 +110,9 @@ public class PrepareInterceptor implements Interceptor {
     /**
      * 根据参数对象判断是否是分页sql
      */
-    private boolean isPageSql(Object parameterObject, Class returnType) {
+    private boolean isPagedSql(Object parameterObject, Class returnType) {
         // 如果返回类型是
-        boolean validParameter = parameterObject instanceof PageableQueryObject;
+        boolean validParameter = parameterObject instanceof PageableQo;
         boolean invalidReturnType = returnType.isPrimitive() || returnType.isInstance(Integer.class);
 
         return validParameter && !invalidReturnType;

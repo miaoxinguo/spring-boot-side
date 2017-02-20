@@ -9,5 +9,5 @@ public interface Dialect {
         MYSQL
     }
 
-    String getPageSql(String sql, int offset, int limit);
+    String getPagedSql(String sql, int offset, int limit);
 }

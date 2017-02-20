@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Json 工具类 - Jackson 实现版本
  *
- * Jackson 所有异常转为 apache common 的 SerializationException 抛出， 由 spirng mvc 框架统一处理
+ * Jackson 所有异常转为 apache common 的 SerializationException 抛出， 由 mvc 框架统一处理
  */
 public final class JsonUtils {
 

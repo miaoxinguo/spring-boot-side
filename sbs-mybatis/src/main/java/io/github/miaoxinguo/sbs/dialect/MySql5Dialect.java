@@ -5,7 +5,7 @@ package io.github.miaoxinguo.sbs.dialect;
  */
 public class MySql5Dialect implements Dialect {
 
-    public String getPageSql(String sql, int offset, int limit) {
+    public String getPagedSql(String sql, int offset, int limit) {
         StringBuilder builder = new StringBuilder(sql);  // default length is sql.length + 16
         builder.append(" limit ");
         if (offset > 0) {

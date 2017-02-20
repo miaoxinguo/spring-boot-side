@@ -62,7 +62,7 @@ project(':sbs-core') {
 
 project(':sbs-mybatis') {
     dependencies {
-        compile project(":sbs-core")
+//        compile project(":sbs-core")
 
         compile group: 'org.springframework', name: 'spring-jdbc', version: "${springVersion}"
         compile group: 'org.mybatis', name: 'mybatis', version: '3.4.1'

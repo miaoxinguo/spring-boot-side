@@ -1,5 +1,5 @@
 package io.github.miaoxinguo.sbs.qo;
 
-public class AccountQueryObject extends PageableQueryObject {
+public class AccountQueryObject extends PageableQo {
 
 }

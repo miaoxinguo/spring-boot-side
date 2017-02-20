@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 分页查询结果
  */
-public class PageResult<T> implements Serializable {
+public class PaginationResult<T> implements Serializable {
 
     // 当前页
     private int currentPage = 1;

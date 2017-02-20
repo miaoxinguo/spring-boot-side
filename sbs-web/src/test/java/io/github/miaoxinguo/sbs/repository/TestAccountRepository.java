@@ -29,7 +29,7 @@ public class TestAccountRepository {
         AccountQueryObject qo = new AccountQueryObject();
         qo.setPageNum(1);
         qo.setPageSize(12);
-        List<Account> list = accountRepository.selectByQueryObject(qo);
+        List<Account> list = accountRepository.selectByQo(qo);
         System.out.println(list);
     }
 
