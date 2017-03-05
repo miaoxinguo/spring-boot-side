@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE generatorConfiguration
-        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-
 <generatorConfiguration>
-
     <context id="default" targetRuntime="MyBatis3Simple">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
         <property name="namespace" value="io.github.miaoxinguo.sbs.repository"/>
 
-        <plugin type="io.github.miaoxinguo.sbs.plugin.MapperPlugin"/>
+        <plugin type="com.github.miaoxinguo.sbs.plugin.MapperPlugin"/>
 
-        <!--<commentGenerator type="io.github.miaoxinguo.sbs.comment.CustomerCommentGenerator">-->
+        <!--<commentGenerator type="CustomerCommentGenerator">-->
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
@@ -23,7 +20,7 @@
                         password="123456"/>
 
         <!-- 类型转换 -->
-        <javaTypeResolver type="io.github.miaoxinguo.sbs.resolver.JavaTypeResolverCustomerImpl">
+        <javaTypeResolver type="com.github.miaoxinguo.sbs.resolver.JavaTypeResolverCustomerImpl">
             <!--
                true：数据库的数据类型 DECIMAL 和 NUMERIC 映射为 java.math.BigDecimal
                false：默认,
@@ -36,7 +33,8 @@
         </javaTypeResolver>
 
         <!-- 生成Model类存放位置 -->
-        <javaModelGenerator targetPackage="io.github.miaoxinguo.sbs.entity" targetProject="sbs-mybatis-generator/src/main/java">
+        <javaModelGenerator targetPackage="io.github.miaoxinguo.sbs.entity"
+                            targetProject="sbs-mybatis-generator/src/main/java">
             <property name="enableSubPackages" value="true"/>
 
             <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
@@ -50,9 +48,9 @@
 
         <!-- 不自动生成接口，写一个通用的泛型接口用于继承，解决生成覆盖的问题 -->
         <!-- 生成 Repository 类存放位置
-        <javaClientGenerator type="XMLMAPPER" targetPackage="io.github.miaoxinguo.sbs.repository" targetProject="sbs-mybatis-generator/src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="io.github.miaoxinguo.sbs.mapper" targetProject="sbs-mybatis-generator/src/main/java">
             <property name="enableSubPackages" value="true"/>
-            <property name="rootInterface" value="io.github.miaoxinguo.sbs.repository.GenericRepository"/>
+            <property name="rootInterface" value="GenericRepository"/>
         </javaClientGenerator>-->
 
         <!--生成对应表及类名-->
@@ -62,7 +60,7 @@
 
         <table tableName="account">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="user_id" javaType="io.github.miaoxinguo.sbs.entity.User" property="user"/>
+            <columnOverride column="user_id" javaType="User" property="user"/>
         </table>
 
     </context>

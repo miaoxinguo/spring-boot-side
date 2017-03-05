@@ -1,5 +1,2 @@
-include 'sbs-core'
-include 'sbs-mybatis'
-include 'sbs-mybatis-generator'
-include 'sbs-biz'
 include 'sbs-web'
+include 'sbs-mybatis-generator'

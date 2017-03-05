@@ -1,0 +1,8 @@
+package com.github.miaoxinguo.sbs.controller;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class UserController {
+
+}
