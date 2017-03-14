@@ -1,4 +1,4 @@
-package com.github.miaoxinguo.sbs.plugin;
+package com.github.miaoxinguo.plugin;
 
 import org.mybatis.generator.api.GeneratedXmlFile;
 import org.mybatis.generator.api.IntrospectedTable;

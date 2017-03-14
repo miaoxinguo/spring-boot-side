@@ -2,12 +2,14 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
+    <!--<properties resource="" url=""/>-->
+
     <context id="default" targetRuntime="MyBatis3Simple">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
-        <property name="namespace" value="io.github.miaoxinguo.sbs.repository"/>
+        <property name="namespace" value="com.github.miaoxinguo.sbs.mapper"/>
 
-        <plugin type="com.github.miaoxinguo.sbs.plugin.MapperPlugin"/>
+        <plugin type="com.github.miaoxinguo.plugin.MapperPlugin"/>
 
         <!--<commentGenerator type="CustomerCommentGenerator">-->
         <commentGenerator>
@@ -20,7 +22,7 @@
                         password="123456"/>
 
         <!-- 类型转换 -->
-        <javaTypeResolver type="com.github.miaoxinguo.sbs.resolver.JavaTypeResolverCustomerImpl">
+        <javaTypeResolver type="com.github.miaoxinguo.resolver.JavaTypeResolverCustomerImpl">
             <!--
                true：数据库的数据类型 DECIMAL 和 NUMERIC 映射为 java.math.BigDecimal
                false：默认,

@@ -1,7 +1,8 @@
-package com.github.miaoxinguo.sbs.mapper;
+package com.github.miaoxinguo.mapper;
 
 import com.github.miaoxinguo.sbs.SpringBootSideApp;
 import com.github.miaoxinguo.sbs.entity.User;
+import com.github.miaoxinguo.sbs.mapper.UserMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

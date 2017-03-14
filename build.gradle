@@ -8,12 +8,11 @@ buildscript {
 }
 
 allprojects {
-    group 'io.github.miaoxinguo.sbs'
+    group 'com.github.miaoxinguo'
 
     //定义版本号
     ext {
-        slf4jVersion = '1.7.21'
-        logbackVersion = '1.1.9'
+//        logbackVersion = '1.1.9'
         junitVersion = '4.12'
         druidVersion = '1.0.26'
         hibernateValidatorVersion='5.2.4.Final'
@@ -34,12 +33,9 @@ subprojects {
     // 通用依赖
     dependencies {
         compile 'com.github.miaoxinguo:common:1.0-SNAPSHOT'
-        compile 'com.github.miaoxinguo:mybatis-plugin:1.0-SNAPSHOT'
 
-        compile group: 'org.slf4j', name: 'slf4j-api', version: "${slf4jVersion}"
-
-        runtime group: 'ch.qos.logback', name: 'logback-core', version: "${logbackVersion}"
-        runtime group: 'ch.qos.logback', name: 'logback-classic', version: "${logbackVersion}"
+//        runtime group: 'ch.qos.logback', name: 'logback-core', version: "${logbackVersion}"
+//        runtime group: 'ch.qos.logback', name: 'logback-classic', version: "${logbackVersion}"
 
         testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
     }
@@ -50,6 +46,14 @@ subprojects {
             downloadJavadoc = false
             downloadSources = false
         }
+    }
+}
+
+project(':sbs-mybatis') {
+    dependencies {
+        compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '1.2.0'
+
+        runtime 'mysql:mysql-connector-java:5.1.35'
     }
 }
 
@@ -64,16 +68,18 @@ configure(subprojects.findAll {it.name == 'sbs-web' || it.name == 'sbs-admin'}) 
     apply plugin: 'org.springframework.boot'
 
     dependencies {
+        compile project(":sbs-mybatis")
+
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-jdbc")
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.boot:spring-boot-starter-data-redis")
-
         compile 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.2.0'
-
         compile group: 'com.alibaba', name: 'druid', version: "${druidVersion}"
 
         testCompile("org.springframework.boot:spring-boot-starter-test")
+
+        compileOnly "org.springframework.boot:spring-boot-configuration-processor"
     }
 
     compileJava.dependsOn(processResources)

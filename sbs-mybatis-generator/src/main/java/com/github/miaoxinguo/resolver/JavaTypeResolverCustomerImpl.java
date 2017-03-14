@@ -1,4 +1,4 @@
-package com.github.miaoxinguo.sbs.resolver;
+package com.github.miaoxinguo.resolver;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;

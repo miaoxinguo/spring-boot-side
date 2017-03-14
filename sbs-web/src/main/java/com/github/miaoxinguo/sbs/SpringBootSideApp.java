@@ -9,15 +9,15 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class SpringBootSideApp {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootSideApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(SpringBootSideApp.class);
 
     /**
      * 应用入口
      */
-    public static void main(String[] args) {
-        LOGGER.info("server starting ...");
+    public static void main(String[] args) throws Exception {
+        logger.info("server starting ...");
         SpringApplication.run(SpringBootSideApp.class, args);
 
-        LOGGER.info("server start finished");
+        logger.info("server start finished");
     }
 }

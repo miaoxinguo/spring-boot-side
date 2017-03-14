@@ -1,16 +1,16 @@
 package com.github.miaoxinguo.sbs.configuration;
 
+import com.github.miaoxinguo.mybatis.plugin.mapper.BaseMapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -20,18 +20,13 @@ import javax.sql.DataSource;
  */
 @Configuration
 @AutoConfigureAfter({ DataSourceConfiguration.class })
-@MapperScan(basePackages = "com.github.miaoxinguo.sbs.mapper")
+@MapperScan(markerInterface = BaseMapper.class, basePackages = "com.github.miaoxinguo.sbs.mapper")
 public class MybatisConfiguration {
 
-    private final DataSource dataSource;
-
-    @Autowired
-    public MybatisConfiguration(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    @Resource
+    private DataSource dataSource;
 
     @Bean
-    @ConditionalOnMissingBean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);

@@ -8,26 +8,22 @@ spring:
 # --------------------------------------------------
 spring:
     profiles: dev
-    mail:
-        host: smtp.mxhichina.com
-        username: service@honglingjin.xyz
-        password: Hlj666666
-    activemq:
-        broker-url: tcp://121.42.58.92:61616
-        user: user
-        password: ENC(mYRkg+4Q4hua1kvpCCI2hg==)
     redis:
-        host: 121.42.58.92
+        host: 127.0.0.1
         port: 6379
         password: isiagvK6TQqCt84
         timeout: 120
         database: 11
+
+# LOGGING
+logging:
+    config: classpath:logback-spring.xml
 
 server:
     port: 8088
 
 datasource:
     master:
-        url: jdbc:mysql://127.0.0.1:3306/sbs?useUnicode=true&characterEncoding=utf-8&useSSL=false
-        username: sbs_root
-        password: 123456
+        url: jdbc:mysql://aws-dev.cbqdef72uoed.us-west-2.rds.amazonaws.com:3306/sbs?useUnicode=true&characterEncoding=utf-8&useSSL=false
+        username: miaoxg
+        password: miaoxg2002

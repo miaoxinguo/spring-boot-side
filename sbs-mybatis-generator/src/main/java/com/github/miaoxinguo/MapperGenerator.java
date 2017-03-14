@@ -1,4 +1,4 @@
-package com.github.miaoxinguo.sbs;
+package com.github.miaoxinguo;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;

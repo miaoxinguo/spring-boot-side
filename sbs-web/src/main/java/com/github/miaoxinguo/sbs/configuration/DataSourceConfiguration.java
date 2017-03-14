@@ -6,13 +6,14 @@ import com.github.miaoxinguo.mybatis.plugin.RoutingDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowire;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,17 +27,14 @@ public class DataSourceConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfiguration.class);
 
-    private final Environment env;
-
-    @Autowired
-    public DataSourceConfiguration(Environment env) {
-        this.env = env;
-    }
+    @Resource
+    private Environment env;
 
     /**
      * 路由数据源
      */
     @Bean(name = "dataSource", autowire = Autowire.BY_NAME)
+    @Primary
     public DataSource dataSource() {
         RoutingDataSource dataSource = new RoutingDataSource();
 

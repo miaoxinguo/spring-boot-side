@@ -1,8 +1,9 @@
-package com.github.miaoxinguo.sbs.service;
+package com.github.miaoxinguo.service;
 
 import com.github.miaoxinguo.sbs.SpringBootSideApp;
 import com.github.miaoxinguo.sbs.entity.Account;
 import com.github.miaoxinguo.sbs.entity.User;
+import com.github.miaoxinguo.sbs.service.AccountService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

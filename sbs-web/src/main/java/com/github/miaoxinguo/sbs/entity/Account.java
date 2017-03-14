@@ -9,7 +9,7 @@ public class Account implements Serializable {
 
     private String name;
 
-    private Integer type;
+    private Integer type;  // TODO 换成枚举
 
     private BigDecimal balance;
 
