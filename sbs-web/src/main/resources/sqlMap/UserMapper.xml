@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.github.miaoxinguo.sbs.mapper.UserRepository">
+<mapper namespace="com.github.miaoxinguo.sbs.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.github.miaoxinguo.sbs.entity.User">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -34,7 +34,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <update id="updateSelectiveById" parameterType="com.github.miaoxinguo.sbs.entity.User">
+  <update id="updateSelective" parameterType="com.github.miaoxinguo.sbs.entity.User">
     update user
     <set>
       <if test="name != null">
@@ -60,5 +60,10 @@
     select id, name, age, birthday, create_time, update_time
     from user
     where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByPageableQo" resultMap="BaseResultMap">
+    select id, name, age, birthday, create_time, update_time
+    from user order by id DESC
   </select>
 </mapper>

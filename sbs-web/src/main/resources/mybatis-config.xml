@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <properties>
-        <property name="dialect" value="mysql"/>
-    </properties>
+    <!--<properties>-->
+        <!--<property name="dialect" value="mysql"/>-->
+    <!--</properties>-->
 
     <settings>
         <!-- changes from the defaults -->
@@ -11,12 +11,13 @@
     </settings>
 
     <typeHandlers>
-        <typeHandler handler="com.github.miaoxinguo.mybatis.plugin.typeHandler.LocalDateTimeTypeHandler"/>
+        <typeHandler handler="plugin.typeHandler.LocalDateTimeTypeHandler"/>
     </typeHandlers>
 
     <plugins>
-        <plugin interceptor="com.github.miaoxinguo.mybatis.plugin.interceptor.PrepareInterceptor"/>
-        <plugin interceptor="com.github.miaoxinguo.mybatis.plugin.interceptor.HandleResultSetsInterceptor"/>
+        <plugin interceptor="plugin.interceptor.PaginationInterceptor">
+            <property name="dialect" value="mysql"/>
+        </plugin>
     </plugins>
 
 </configuration>

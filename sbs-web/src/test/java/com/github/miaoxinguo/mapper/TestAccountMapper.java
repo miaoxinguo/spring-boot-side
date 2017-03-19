@@ -15,8 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = SpringBootSideApp.class)
-public class TestAccountRepository {
-    private static final Logger logger = LoggerFactory.getLogger(TestAccountRepository.class);
+public class TestAccountMapper {
+    private static final Logger logger = LoggerFactory.getLogger(TestAccountMapper.class);
 
     @Autowired
     private AccountMapper accountMapper;

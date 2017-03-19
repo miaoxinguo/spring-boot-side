@@ -13,7 +13,7 @@ allprojects {
     //定义版本号
     ext {
 //        logbackVersion = '1.1.9'
-        junitVersion = '4.12'
+//        junitVersion = '4.12'
         druidVersion = '1.0.26'
         hibernateValidatorVersion='5.2.4.Final'
     }
@@ -33,11 +33,9 @@ subprojects {
     // 通用依赖
     dependencies {
         compile 'com.github.miaoxinguo:common:1.0-SNAPSHOT'
+        compile 'com.github.miaoxinguo:mybatis-plugin:1.0-SNAPSHOT'
 
-//        runtime group: 'ch.qos.logback', name: 'logback-core', version: "${logbackVersion}"
-//        runtime group: 'ch.qos.logback', name: 'logback-classic', version: "${logbackVersion}"
-
-        testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
+//        testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
     }
 
     // 设置是否下载源码和文档
@@ -46,14 +44,6 @@ subprojects {
             downloadJavadoc = false
             downloadSources = false
         }
-    }
-}
-
-project(':sbs-mybatis') {
-    dependencies {
-        compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '1.2.0'
-
-        runtime 'mysql:mysql-connector-java:5.1.35'
     }
 }
 
@@ -68,8 +58,6 @@ configure(subprojects.findAll {it.name == 'sbs-web' || it.name == 'sbs-admin'}) 
     apply plugin: 'org.springframework.boot'
 
     dependencies {
-        compile project(":sbs-mybatis")
-
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-jdbc")
         compile("org.springframework.boot:spring-boot-starter-web")

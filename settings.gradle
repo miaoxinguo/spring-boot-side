@@ -1,3 +1,2 @@
 include 'sbs-web'
 include 'sbs-mybatis-generator'
-include 'sbs-mybatis'
