@@ -19,7 +19,7 @@
 
         <!-- logger configure -->
         <logger name="javax.management" level="WARN"/>
-        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.springframework" level="debug"/>
         <logger name="org.springframework.boot.context.embedded" level="INFO"/>
         <logger name="org.apache" level="WARN"/>
         <logger name="org.quartz" level="WARN"/>

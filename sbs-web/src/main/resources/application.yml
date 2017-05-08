@@ -24,6 +24,10 @@ server:
 
 datasource:
     master:
-        url: jdbc:mysql://aws-dev.cbqdef72uoed.us-west-2.rds.amazonaws.com:3306/sbs?useUnicode=true&characterEncoding=utf-8&useSSL=false
-        username: miaoxg
-        password: miaoxg2002
+        url: jdbc:mysql://127.0.0.1:3306/sbs?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+        username: sbs_root
+        password: 123456
+    slave:
+        url: jdbc:mysql://127.0.0.1:3306/sbs?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+        username: sbs_root
+        password: 123456

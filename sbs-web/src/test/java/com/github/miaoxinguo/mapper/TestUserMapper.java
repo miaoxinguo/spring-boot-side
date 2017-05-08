@@ -1,6 +1,5 @@
 package com.github.miaoxinguo.mapper;
 
-import com.github.miaoxinguo.mybatis.plugin.Page;
 import com.github.miaoxinguo.sbs.SpringBootSideApp;
 import com.github.miaoxinguo.sbs.entity.User;
 import com.github.miaoxinguo.sbs.mapper.UserMapper;
@@ -30,7 +29,7 @@ public class TestUserMapper {
         UserQueryObject qo = new UserQueryObject();
         qo.setPageNum(1);
         qo.setPageSize(10);
-        Page<User> result = userMapper.selectByPageableQo(qo);
-        System.out.println(result);
+        // Page<User> result = userMapper.selectByPageableQo(qo);
+        // System.out.println(result);
     }
 }

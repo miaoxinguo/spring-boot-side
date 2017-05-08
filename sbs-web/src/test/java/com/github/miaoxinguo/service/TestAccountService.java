@@ -19,8 +19,9 @@ public class TestAccountService {
     @Autowired
     private AccountService accountService;
 
+
     @Test
-    public void testAdd(){
+    public void testAdd() throws Exception {
         Account account = new Account();
         account.setName("foo");
         account.setType(1);

@@ -1,22 +1,19 @@
 package com.github.miaoxinguo.sbs.configuration;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.github.miaoxinguo.mybatis.plugin.DataSourceType;
-import com.github.miaoxinguo.mybatis.plugin.RoutingDataSource;
+import com.github.miaoxinguo.sbs.properties.DataSourceMasterProperties;
+import com.github.miaoxinguo.sbs.properties.DataSourceSlaveProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 数据库配置类
@@ -30,34 +27,23 @@ public class DataSourceConfiguration {
     @Resource
     private Environment env;
 
-    /**
-     * 路由数据源
-     */
-    @Bean(name = "dataSource", autowire = Autowire.BY_NAME)
-    @Primary
-    public DataSource dataSource() {
-        RoutingDataSource dataSource = new RoutingDataSource();
+    @Resource
+    private DataSourceMasterProperties masterProperties;
 
-        Map<Object, Object> map = new HashMap<>();
-        map.put(DataSourceType.MASTER, this.dataSourceMaster());
-        map.put(DataSourceType.SLAVE, this.dataSourceSlave());
-
-        dataSource.setTargetDataSources(map);
-        dataSource.setDefaultTargetDataSource(dataSourceMaster());
-        return this.dataSourceMaster();
-    }
+    @Resource
+    private DataSourceSlaveProperties slaveProperties;
 
     /**
      * 主库
      */
     @Bean(name = "master", autowire = Autowire.BY_NAME)
     public DataSource dataSourceMaster() {
-        LOGGER.info("master db url = {}", env.getProperty("datasource.master.url"));
+        LOGGER.info("master properties: {}", masterProperties);
 
         DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl(env.getProperty("datasource.master.url"));
-        dataSource.setUsername(env.getProperty("datasource.master.username"));
-        dataSource.setPassword(env.getProperty("datasource.master.password"));
+        dataSource.setUrl(masterProperties.getUrl());
+        dataSource.setUsername(masterProperties.getUsername());
+        dataSource.setPassword(masterProperties.getPassword());
 
         return dataSource;
     }
@@ -67,12 +53,12 @@ public class DataSourceConfiguration {
      */
     @Bean(name = "slave", autowire = Autowire.BY_NAME)
     public DataSource dataSourceSlave() {
-        LOGGER.info("slave db url = {}", env.getProperty("datasource.master.url"));
+        LOGGER.info("slave properties: {}", env.getProperty("datasource.master.url"));
 
         DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl(env.getProperty("datasource.master.url"));
-        dataSource.setUsername(env.getProperty("datasource.master.username"));
-        dataSource.setPassword(env.getProperty("datasource.master.password"));
+        dataSource.setUrl(slaveProperties.getUrl());
+        dataSource.setUsername(slaveProperties.getUsername());
+        dataSource.setPassword(slaveProperties.getPassword());
         return dataSource;
     }
 
@@ -81,6 +67,6 @@ public class DataSourceConfiguration {
      */
     @Bean
     public DataSourceTransactionManager dataSourceTransactionManager() {
-        return new DataSourceTransactionManager(dataSource());
+        return new DataSourceTransactionManager(dataSourceMaster());
     }
 }

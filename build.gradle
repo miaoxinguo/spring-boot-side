@@ -12,8 +12,7 @@ allprojects {
 
     //定义版本号
     ext {
-//        logbackVersion = '1.1.9'
-//        junitVersion = '4.12'
+        junitVersion = '4.12'
         druidVersion = '1.0.26'
         hibernateValidatorVersion='5.2.4.Final'
     }
@@ -32,10 +31,9 @@ subprojects {
 
     // 通用依赖
     dependencies {
-        compile 'com.github.miaoxinguo:common:1.0-SNAPSHOT'
-        compile 'com.github.miaoxinguo:mybatis-plugin:1.0-SNAPSHOT'
+        compile 'com.github.miaoxinguo:common:1.0.0'
 
-//        testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
+        testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
     }
 
     // 设置是否下载源码和文档
@@ -58,16 +56,19 @@ configure(subprojects.findAll {it.name == 'sbs-web' || it.name == 'sbs-admin'}) 
     apply plugin: 'org.springframework.boot'
 
     dependencies {
+        compile 'com.github.miaoxinguo:mybatis-plugin:1.0.1'
+
+        compile 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.2.0'
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-jdbc")
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.boot:spring-boot-starter-data-redis")
-        compile 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.2.0'
         compile group: 'com.alibaba', name: 'druid', version: "${druidVersion}"
+        compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
 
         testCompile("org.springframework.boot:spring-boot-starter-test")
 
-        compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+        compile "org.springframework.boot:spring-boot-configuration-processor"
     }
 
     compileJava.dependsOn(processResources)

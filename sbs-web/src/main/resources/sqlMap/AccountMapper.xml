@@ -79,4 +79,8 @@
         FROM account
         WHERE id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectByPageableQo" resultMap="BaseResultMap">
+        select * from account order by id DESC
+    </select>
 </mapper>

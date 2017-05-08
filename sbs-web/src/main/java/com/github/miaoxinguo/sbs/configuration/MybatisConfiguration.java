@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 @MapperScan(markerInterface = BaseMapper.class, basePackages = "com.github.miaoxinguo.sbs.mapper")
 public class MybatisConfiguration {
 
-    @Resource
+    @Resource(name = "master")
     private DataSource dataSource;
 
     @Bean
